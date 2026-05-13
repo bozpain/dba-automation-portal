@@ -1,0 +1,18 @@
+services:
+  semaphore:
+    image: semaphoreui/semaphore:${SEMAPHORE_IMAGE_TAG:-latest}
+    restart: unless-stopped
+    ports:
+      - "${SEMAPHORE_PORT:-3000}:3000"
+    environment:
+      SEMAPHORE_DB_DIALECT: sqlite
+      SEMAPHORE_DB: /dbaportal/semaphore/semaphore.sqlite
+      SEMAPHORE_PLAYBOOK_PATH: /dbaportal/semaphore/tmp
+      SEMAPHORE_ADMIN: ${SEMAPHORE_ADMIN:-admin}
+      SEMAPHORE_ADMIN_NAME: ${SEMAPHORE_ADMIN_NAME:-DBA Admin}
+      SEMAPHORE_ADMIN_EMAIL: ${SEMAPHORE_ADMIN_EMAIL:-admin@localhost}
+      SEMAPHORE_ADMIN_PASSWORD: ${SEMAPHORE_ADMIN_PASSWORD:-ChangeMe_OnlyForLab_2026!}
+      SEMAPHORE_ACCESS_KEY_ENCRYPTION: ${SEMAPHORE_ACCESS_KEY_ENCRYPTION:?set a 32-byte base64 key}
+      TZ: ${TZ:-Asia/Jakarta}
+    volumes:
+      - /dbaportal:/dbaportal

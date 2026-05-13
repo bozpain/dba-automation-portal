@@ -1,0 +1,685 @@
+{
+  "project": {
+    "name": "DBA Automation",
+    "alert": false,
+    "max_parallel_tasks": 1
+  },
+  "repository": {
+    "name": "dba-automation-portal",
+    "url": "file:///dbaportal/automation/git/dba-automation-portal.git",
+    "branch": "master"
+  },
+  "key": {
+    "name": "None"
+  },
+  "inventory": {
+    "name": "Local Runner",
+    "inventory": "localhost ansible_connection=local"
+  },
+  "environment": {
+    "name": "DBA Automation Defaults",
+    "env": {
+      "DBA_PORTAL_ROOT": "/dbaportal",
+      "DBA_AUTOMATION_PROJECT_BASE": "/dbaportal/automation/projects",
+      "ORACLE_INSTALL_REPLICATION_ROOT": "/dbaportal/automation/projects/oracle-install-replication-framework",
+      "ORACLE_REPLICATION_ROOT": "/dbaportal/automation/projects/oracle-replication-framework",
+      "ORACLE_PATCH_ROOT": "/dbaportal/automation/projects/oracle-patch-framework",
+      "OPF_REPO_BASE": "/u01/oracle-patch/repo",
+      "OPF_SOURCE_BASE": "/u01/sources",
+      "PYTHON_BIN": "python3.12"
+    }
+  },
+  "templates": [
+    {
+      "name": "DBA / 00 Portal Health Check",
+      "app": "bash",
+      "script": "tasks/health-check.sh",
+      "description": "Validate Semaphore runner, local repositories, and required binaries.",
+      "survey_vars": []
+    },
+    {
+      "name": "DBA / 10 Oracle Install Replication",
+      "app": "bash",
+      "script": "tasks/oracle-install-replication.sh",
+      "description": "Run install, GI/DB, patch during install, Active Data Guard, and report actions.",
+      "survey_vars": [
+        {
+          "name": "ACTION",
+          "title": "Action",
+          "type": "enum",
+          "required": true,
+          "values": "validate-config,doctor,inventory,precheck,prepare-os,verify-installer,prepare-storage-rules,install-grid,configure-asm-storage,install-db-software,update-opatch,analyze-patch,apply-grid-patch,apply-db-patch,apply-ojvm-patch,datapatch,patch-inventory,create-database,setup-active-dataguard,setup-dataguard-broker,validate-deployment,generate-plan,generate-report,switchover,failover,collect-diagnostics,cleanup-lab,rollback-framework",
+          "default": "validate-config"
+        },
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-rac-dg.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "DBA / 20 Oracle Data Guard Replication",
+      "app": "bash",
+      "script": "tasks/oracle-replication.sh",
+      "description": "Run Data Guard config, render, SSH bootstrap, dry-run, and staged execution.",
+      "survey_vars": [
+        {
+          "name": "ACTION",
+          "title": "Action",
+          "type": "enum",
+          "required": true,
+          "values": "init-config,validate-config,setup-ssh,plan,render,run",
+          "default": "validate-config"
+        },
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/profiles/rac-2node-broker.json"
+        },
+        {
+          "name": "PROFILE",
+          "title": "Init profile",
+          "type": "enum",
+          "required": false,
+          "values": "single-gi-physical,rac-2node-physical,rac-2node-broker",
+          "default": "rac-2node-broker"
+        },
+        {
+          "name": "OUTPUT_CONFIG",
+          "title": "Output config path",
+          "type": "string",
+          "required": false,
+          "default": "configs/my-dg.json"
+        },
+        {
+          "name": "RENDER_DIR",
+          "title": "Render directory",
+          "type": "string",
+          "required": false,
+          "default": "rendered/my-dg"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXECUTE",
+          "title": "Execute",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        },
+        {
+          "name": "YES",
+          "title": "Confirm yes",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        },
+        {
+          "name": "FROM_STAGE",
+          "title": "From stage",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "TO_STAGE",
+          "title": "To stage",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Patch / 00 Health Check",
+      "app": "bash",
+      "script": "tasks/oracle-patch-health-check.sh",
+      "description": "Validate runner prerequisites, patch repository, inventory, runtime path, and optional SSH batch mode.",
+      "survey_vars": [
+        {
+          "name": "PATCH_ID",
+          "title": "Patch ID",
+          "type": "string",
+          "required": true,
+          "default": "19.30"
+        },
+        {
+          "name": "HOSTS",
+          "title": "Hosts",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "CHECK_SSH",
+          "title": "Check SSH batch mode",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "Patch / 01 Add Host",
+      "app": "bash",
+      "script": "tasks/oracle-patch-add-host.sh",
+      "description": "Onboard hosts into the Oracle Patch inventory with dry-run and non-interactive SSH options.",
+      "survey_vars": [
+        {
+          "name": "HOSTS",
+          "title": "Hosts",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "APP_NAME",
+          "title": "Application name",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "DB_HOME",
+          "title": "DB home",
+          "type": "string",
+          "required": true,
+          "default": "/u01/app/oracle/product/19c/dbhome_1"
+        },
+        {
+          "name": "GRID_HOME",
+          "title": "Grid home",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "DB_USER",
+          "title": "DB user",
+          "type": "string",
+          "required": true,
+          "default": "oracle"
+        },
+        {
+          "name": "GRID_USER",
+          "title": "Grid user",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "ALLOW_EXISTING_APP",
+          "title": "Allow existing app",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        },
+        {
+          "name": "ALLOW_APP_CONFIG_DRIFT",
+          "title": "Allow app config drift",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "SKIP_SSH_COPY_ID",
+          "title": "Skip ssh-copy-id",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        }
+      ]
+    },
+    {
+      "name": "Patch / 02 Inventory",
+      "app": "bash",
+      "script": "tasks/oracle-patch-inventory.sh",
+      "description": "View and validate Oracle Patch inventory rows, duplicate hosts, and app config drift.",
+      "survey_vars": [
+        {
+          "name": "APP_NAME",
+          "title": "Application name filter",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "HOSTS",
+          "title": "Host filter",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Patch / 03 Status",
+      "app": "bash",
+      "script": "tasks/oracle-patch-status.sh",
+      "description": "Show latest patch phase status and resume hint for selected hosts.",
+      "survey_vars": [
+        {
+          "name": "PATCH_ID",
+          "title": "Patch ID",
+          "type": "string",
+          "required": true,
+          "default": "19.30"
+        },
+        {
+          "name": "HOSTS",
+          "title": "Hosts",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "OPERATOR",
+          "title": "Operator",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "RESUME_FROM_RUN_ID",
+          "title": "Status until run ID",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Patch / 04 Dry Run Full Pipeline",
+      "app": "bash",
+      "script": "tasks/oracle-patch-dry-run.sh",
+      "description": "Preview the full patch pipeline without creating locks, state, or remote changes.",
+      "survey_vars": [
+        {
+          "name": "PATCH_ID",
+          "title": "Patch ID",
+          "type": "string",
+          "required": true,
+          "default": "19.30"
+        },
+        {
+          "name": "HOSTS",
+          "title": "Hosts",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "OPERATOR",
+          "title": "Operator",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "CHANGE_ID",
+          "title": "Change ID",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "ENVIRONMENT",
+          "title": "Environment",
+          "type": "enum",
+          "required": false,
+          "values": "lab,dev,sit,uat,prod,drc",
+          "default": "lab"
+        },
+        {
+          "name": "RUN_REASON",
+          "title": "Run reason",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "FORCE_RUN",
+          "title": "Force run preview",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "Patch / 05 Precheck",
+      "app": "bash",
+      "script": "tasks/oracle-patch-precheck.sh",
+      "description": "Run patch precheck on selected hosts.",
+      "survey_vars": [
+        {
+          "name": "PATCH_ID",
+          "title": "Patch ID",
+          "type": "string",
+          "required": true,
+          "default": "19.30"
+        },
+        {
+          "name": "HOSTS",
+          "title": "Hosts",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "OPERATOR",
+          "title": "Operator",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "CHANGE_ID",
+          "title": "Change ID",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "ENVIRONMENT",
+          "title": "Environment",
+          "type": "enum",
+          "required": false,
+          "values": "lab,dev,sit,uat,prod,drc",
+          "default": "lab"
+        },
+        {
+          "name": "RUN_REASON",
+          "title": "Run reason",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "FORCE_RUN",
+          "title": "Force run",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "Patch / 06 Full Patch",
+      "app": "bash",
+      "script": "tasks/oracle-patch-full.sh",
+      "description": "Run the full patch pipeline after dry-run and precheck have been reviewed.",
+      "survey_vars": [
+        {
+          "name": "PATCH_ID",
+          "title": "Patch ID",
+          "type": "string",
+          "required": true,
+          "default": "19.30"
+        },
+        {
+          "name": "HOSTS",
+          "title": "Hosts",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "OPERATOR",
+          "title": "Operator",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "CHANGE_ID",
+          "title": "Change ID",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "ENVIRONMENT",
+          "title": "Environment",
+          "type": "enum",
+          "required": true,
+          "values": "lab,dev,sit,uat,prod,drc",
+          "default": "lab"
+        },
+        {
+          "name": "RUN_REASON",
+          "title": "Run reason",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "FORCE_RUN",
+          "title": "Force run",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        },
+        {
+          "name": "CONFIRM_FULL_PATCH",
+          "title": "Confirm full patch",
+          "type": "string",
+          "required": true,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Patch / 07 Resume",
+      "app": "bash",
+      "script": "tasks/oracle-patch-resume.sh",
+      "description": "Resume a failed patch pipeline using a previous run ID.",
+      "survey_vars": [
+        {
+          "name": "PATCH_ID",
+          "title": "Patch ID",
+          "type": "string",
+          "required": true,
+          "default": "19.30"
+        },
+        {
+          "name": "HOSTS",
+          "title": "Hosts",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "OPERATOR",
+          "title": "Operator",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "RESUME_FROM_RUN_ID",
+          "title": "Resume from run ID",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "CHANGE_ID",
+          "title": "Change ID",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "ENVIRONMENT",
+          "title": "Environment",
+          "type": "enum",
+          "required": false,
+          "values": "lab,dev,sit,uat,prod,drc",
+          "default": "lab"
+        },
+        {
+          "name": "RUN_REASON",
+          "title": "Run reason",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "FORCE_RUN",
+          "title": "Force run",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "Patch / 99 Advanced Phase",
+      "app": "bash",
+      "script": "tasks/oracle-patch.sh",
+      "description": "Advanced/manual patch phase runner for execute, apply, ojvm, datapatch, postcheck, status, full, and resume.",
+      "survey_vars": [
+        {
+          "name": "PHASE",
+          "title": "Phase",
+          "type": "enum",
+          "required": true,
+          "values": "precheck,execute,apply,ojvm,datapatch,postcheck,full,resume,status",
+          "default": "status"
+        },
+        {
+          "name": "PATCH_ID",
+          "title": "Patch ID",
+          "type": "string",
+          "required": true,
+          "default": "19.30"
+        },
+        {
+          "name": "HOSTS",
+          "title": "Hosts",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "OPERATOR",
+          "title": "Operator",
+          "type": "string",
+          "required": true,
+          "default": ""
+        },
+        {
+          "name": "CHANGE_ID",
+          "title": "Change ID",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "ENVIRONMENT",
+          "title": "Environment",
+          "type": "enum",
+          "required": false,
+          "values": "lab,dev,sit,uat,prod,drc",
+          "default": "lab"
+        },
+        {
+          "name": "RUN_REASON",
+          "title": "Run reason",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "FORCE_RUN",
+          "title": "Force run",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        },
+        {
+          "name": "RESUME_FROM_RUN_ID",
+          "title": "Resume from run ID",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "CONFIRM_FULL_PATCH",
+          "title": "Confirm full patch",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    }
+  ]
+}

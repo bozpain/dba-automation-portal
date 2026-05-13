@@ -1,0 +1,6 @@
+assets/semaphore_*
+assets/repos/*.bundle
+assets/repos/*.worktree.tar.gz
+assets/checksums/*.sha256
+*.log
+.env
