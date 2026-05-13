@@ -8,6 +8,7 @@ parse_survey_args "$@"
 PROJECT_ROOT="${ORACLE_PATCH_ROOT:-/dbaportal/automation/projects/oracle-patch-framework}"
 APP_NAME="$(get_arg APP_NAME "")"
 HOSTS="$(get_arg HOSTS "")"
+PYTHON_BIN="${PYTHON_BIN:-python3.12}"
 
 require_project_root "${PROJECT_ROOT}" "inventory/targets.csv"
 
@@ -17,7 +18,7 @@ echo "Oracle Patch inventory"
 echo "Inventory: ${inventory}"
 echo
 
-python3.12 - "${inventory}" "${APP_NAME}" "${HOSTS}" <<'PY'
+"${PYTHON_BIN}" - "${inventory}" "${APP_NAME}" "${HOSTS}" <<'PY'
 import csv
 import sys
 from collections import Counter, defaultdict

@@ -13,6 +13,7 @@ DB_HOME="$(get_arg DB_HOME "")"
 GRID_HOME="$(get_arg GRID_HOME "")"
 DB_USER="$(get_arg DB_USER "oracle")"
 GRID_USER="$(get_arg GRID_USER "")"
+CONFIRM_ADD_HOST="$(get_arg CONFIRM_ADD_HOST "")"
 
 require_project_root "${PROJECT_ROOT}" "scripts/add_host.sh"
 require_non_empty "${HOSTS}" "HOSTS"
@@ -21,6 +22,11 @@ require_non_empty "${DB_HOME}" "DB_HOME"
 require_non_empty "${DB_USER}" "DB_USER"
 
 cd "${PROJECT_ROOT}"
+
+if ! bool_arg DRY_RUN true && [[ "${CONFIRM_ADD_HOST}" != "ADD" ]]; then
+  echo "ERROR: Add Host real inventory update requires CONFIRM_ADD_HOST=ADD" >&2
+  exit 1
+fi
 
 cmd=(
   "./scripts/add_host.sh"

@@ -106,6 +106,8 @@ Patch / 04 Dry Run Full Pipeline
 Patch / 05 Precheck
 Patch / 06 Full Patch
 Patch / 07 Resume
+Patch / 08 List Reports
+Patch / 09 Export Report
 Patch / 99 Advanced Phase
 ```
 
@@ -143,6 +145,7 @@ Script: tasks/oracle-patch-add-host.sh
 | `ALLOW_APP_CONFIG_DRIFT` | Enum | Yes | `false` | `false,true`; use only when app rows intentionally differ |
 | `DRY_RUN` | Enum | Yes | `true` | `true,false`; dry-run does not SSH or update inventory |
 | `SKIP_SSH_COPY_ID` | Enum | Yes | `true` | `true,false`; keep true when runner SSH key is already installed |
+| `CONFIRM_ADD_HOST` | String | No | empty | Must be `ADD` when `DRY_RUN=false` |
 
 Recommended first runs:
 
@@ -221,7 +224,27 @@ Repository: dba-automation-portal
 Script: tasks/oracle-patch.sh
 ```
 
-Common patch run variables for templates `03`, `04`, `05`, `06`, and `99`:
+### Patch / 08 List Reports
+
+```text
+App: Bash
+Repository: dba-automation-portal
+Script: tasks/oracle-patch-list-reports.sh
+```
+
+Optional filters: `PATCH_ID`, `OPERATOR`, `HOSTS`, and `LIMIT`.
+
+### Patch / 09 Export Report
+
+```text
+App: Bash
+Repository: dba-automation-portal
+Script: tasks/oracle-patch-export-report.sh
+```
+
+Use `RUN_ID` for a specific report, or filters `PATCH_ID`, `OPERATOR`, and `HOSTS` to export the latest matching report. Default export path is `/dbaportal/exports/patch-reports`.
+
+Common patch run variables for templates `04`, `05`, `06`, `07`, and `99`:
 
 | Name | Type | Required | Default | Notes |
 | --- | --- | --- | --- | --- |
@@ -243,6 +266,7 @@ Common patch run variables for templates `03`, `04`, `05`, `06`, and `99`:
 - Jalankan health check setelah import bundle.
 - Jalankan validate/plan/dry-run sebelum task yang mengubah target.
 - Jalankan Add Host dengan `DRY_RUN=true` sebelum update inventory.
+- Jalankan Add Host real hanya dengan `CONFIRM_ADD_HOST=ADD`.
 - Jalankan Full Patch hanya dengan `CONFIRM_FULL_PATCH=RUN`.
 - Simpan `run_id` dari log patch untuk resume.
 - Jangan isi password di `EXTRA_ARGS`; gunakan secret/survey secret Semaphore jika nanti dibutuhkan.

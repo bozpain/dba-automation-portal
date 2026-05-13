@@ -95,7 +95,9 @@ main() {
     "${portal_data_root}/automation" \
     "${portal_data_root}/automation/projects" \
     "${portal_data_root}/automation/git" \
-    "${portal_data_root}/backups"
+    "${portal_data_root}/backups" \
+    "${portal_data_root}/exports" \
+    "${portal_data_root}/exports/patch-reports"
 
   local tmpdir
   tmpdir="$(mktemp -d)"

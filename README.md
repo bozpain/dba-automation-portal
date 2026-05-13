@@ -1,167 +1,83 @@
+<div align="center">
+
 # DBA Automation Portal
 
-Portal operasional untuk mengonsolidasikan tiga framework DBA automation ke Semaphore UI:
+**Unified DBA automation control plane for Oracle install, replication, and patch operations.**
 
-- `oracle-install-replication-framework`
-- `oracle-replication-framework`
-- `oracle-patch-framework`
+![Semaphore UI](https://img.shields.io/badge/Semaphore%20UI-Control%20Plane-2563EB?style=for-the-badge)
+![Oracle](https://img.shields.io/badge/Oracle-DBA%20Automation-F80000?style=for-the-badge&logo=oracle&logoColor=white)
+![Offline Ready](https://img.shields.io/badge/Offline%20VM-Ready-16A34A?style=for-the-badge)
+![Mountpoint](https://img.shields.io/badge/Mountpoint-%2Fdbaportal-7C3AED?style=for-the-badge)
+![Audit](https://img.shields.io/badge/Audit-Reports%20%2B%20Run%20State-F97316?style=for-the-badge)
 
-Desain ini dibuat untuk kondisi target VM tidak punya internet umum. Semua artifact yang butuh internet diambil dari laptop, lalu dipindahkan ke VM. VM cukup memakai repo Oracle/Yum untuk paket OS seperti `git`, `python3.12`, dan `openssh-clients`.
+</div>
+
+---
+
+## Overview
+
+DBA Automation Portal adalah portal operasional berbasis Semaphore UI untuk mengonsolidasikan tiga framework otomasi database:
+
+| Domain | Framework | Purpose |
+| --- | --- | --- |
+| 🟥 Install + Replication | `oracle-install-replication-framework` | Build Oracle GI/ASM/DB, patch during install, Active Data Guard |
+| 🟩 Data Guard | `oracle-replication-framework` | Physical standby, broker, render/run staged replication |
+| 🟦 Patching | `oracle-patch-framework` | Inventory, precheck, full patch, resume, reports, evidence |
+
+Portal ini didesain untuk kondisi VM tidak punya internet bebas. Artifact disiapkan dari laptop, lalu semua runtime dan growth data dikonsolidasikan di satu mountpoint:
+
+```text
+/dbaportal
+```
+
+---
 
 ## Architecture
 
-```text
-Laptop with internet
-  |
-  | prepare offline assets + git bundles
-  v
-Target VM
-  /dbaportal/
-    bin/semaphore
-    semaphore/config.json
-    semaphore/semaphore.sqlite
-    semaphore/tmp/
-    automation/git/dba-automation-portal.git
-    automation/projects/
-      oracle-install-replication-framework
-      oracle-replication-framework
-      oracle-patch-framework
-    backups/
-```
+![DBA Automation Portal Architecture](docs/assets/dba-automation-portal-architecture.svg)
 
-Semaphore UI menjalankan Bash task dari repo portal lokal. Task wrapper di folder `tasks/` lalu memanggil entry point masing-masing framework di `/dbaportal/automation/projects`.
+---
 
-File kecil systemd tetap berada di `/etc/systemd/system/semaphore.service`, tetapi semua data yang tumbuh berada di mountpoint `/dbaportal`.
+## What You Get
 
-## Laptop Preparation
+| Capability | Output |
+| --- | --- |
+| 🎛️ Unified control plane | Satu project Semaphore: `DBA Automation` |
+| 📦 Offline delivery | Binary Semaphore, git bundle, worktree snapshot, checksum |
+| 🧭 Guided task templates | Patch health check, add host, inventory, dry-run, precheck, full patch, resume |
+| 🛡️ Guardrails | Confirmation gate, lock precheck, inventory backup, dry-run-first workflow |
+| 📊 Evidence | `RUN_ID`, `REPORT_PATH`, `SUMMARY_PATH`, exported HTML report |
+| 🗂️ Controlled growth | Data, repo, backups, exports, SQLite, logs under `/dbaportal` |
 
-Jalankan dari laptop di folder `dba-automation-portal`:
+---
 
-```powershell
-.\scripts\prepare-offline-assets.ps1
-```
+## Portal Task Families
 
-Jika PowerShell execution policy memblokir script, pakai proses one-shot:
+| Group | Templates |
+| --- | --- |
+| 🧪 Portal | Health check and local repository validation |
+| 🏗️ Install + Replication | Validate, plan, precheck, install phases, ADG, broker, reports |
+| 🔁 Data Guard | Init config, validate, render, setup SSH, staged run |
+| 🩺 Patch Operations | Health check, add host, inventory, status, dry-run, precheck, full patch, resume, reports |
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\prepare-offline-assets.ps1
-```
+---
 
-Script ini akan:
+## Documentation
 
-- Download binary Semaphore UI Linux AMD64 ke `assets/`.
-- Membuat checksum lokal.
-- Membuat git bundle dan snapshot worktree untuk tiga project sibling di folder Documents.
+| Document | Purpose |
+| --- | --- |
+| 📘 [Deployment Guide](docs/deployment_guide.md) | Full installation, bootstrap, operations, backup, update, and troubleshooting guide |
+| 🩺 [Patch Operator Flow](docs/patch-operator-flow.md) | Day-to-day Oracle Patch workflow from Semaphore UI |
+| 🧾 [Semaphore Catalog](semaphore/catalog.md) | Manual template catalog when API bootstrap is not used |
+| 🔗 [References](docs/references.md) | Upstream Semaphore UI references |
 
-Copy folder `dba-automation-portal` ke VM, contoh:
+---
 
-```powershell
-scp -r C:\Users\flatline\Documents\dba-automation-portal oracle@<vm>:/tmp/
-```
-
-## VM Installation
-
-Di VM:
-
-```bash
-cd /tmp/dba-automation-portal
-sudo bash scripts/install-semaphore-offline.sh
-sudo bash scripts/import-project-bundles.sh
-sudo bash scripts/publish-portal-repo.sh
-sudo bash scripts/portal-health-check.sh
-```
-
-Setelah service hidup, buka:
+## Operating Principle
 
 ```text
-http://<vm-ip>:3000
+Prepare from laptop -> copy to VM -> install under /dbaportal -> bootstrap Semaphore -> run guided templates
 ```
 
-Default admin dibuat oleh installer:
+All technical steps are maintained in the [Deployment Guide](docs/deployment_guide.md).
 
-- Login: `admin`
-- Password: gunakan nilai `--admin-password` saat install, atau default lab `ChangeMe_OnlyForLab_2026!`
-
-Ganti password sebelum dipakai production.
-
-## Semaphore Configuration
-
-Opsi paling cepat adalah bootstrap via API:
-
-```bash
-python3.12 scripts/bootstrap-semaphore-api.py \
-  --url http://localhost:3000 \
-  --username admin \
-  --password '<admin-password>'
-```
-
-Script ini membuat:
-
-- Project `DBA Automation`
-- Repository lokal `dba-automation-portal`
-- Key `None`
-- Inventory `Local Runner`
-- Environment default
-- Bash task templates untuk health check, install/replication, Data Guard, dan Oracle Patch
-
-Jika API Semaphore berubah atau bootstrap gagal, ikuti catalog manual di:
-
-- `semaphore/catalog.md`
-
-Untuk workflow Oracle Patch harian, baca:
-
-- `docs/patch-operator-flow.md`
-
-Catalog tersebut berisi template Bash yang perlu dibuat di Semaphore UI. Setiap template memakai repository:
-
-```text
-file:///dbaportal/automation/git/dba-automation-portal.git
-```
-
-## Task Wrappers
-
-| Wrapper | Framework | Entry point |
-| --- | --- | --- |
-| `tasks/oracle-install-replication.sh` | Install + replication | `python main.py <action>` |
-| `tasks/oracle-replication.sh` | Data Guard only | `python3.12 scripts/dgctl.py <action>` |
-| `tasks/oracle-patch-health-check.sh` | Oracle patch runner preflight | local checks + optional SSH check |
-| `tasks/oracle-patch-add-host.sh` | Oracle patch inventory onboarding | `./scripts/add_host.sh` |
-| `tasks/oracle-patch-inventory.sh` | Oracle patch inventory view | inventory CSV validation |
-| `tasks/oracle-patch-status.sh` | Oracle patch monitoring | `./scripts/run_patch.sh status` |
-| `tasks/oracle-patch-dry-run.sh` | Oracle patch dry-run | `./scripts/run_patch.sh full --dry-run` |
-| `tasks/oracle-patch-precheck.sh` | Oracle patch precheck | `./scripts/run_patch.sh precheck` |
-| `tasks/oracle-patch-full.sh` | Oracle patch execution | `./scripts/run_patch.sh full` |
-| `tasks/oracle-patch-resume.sh` | Oracle patch recovery | `./scripts/run_patch.sh resume` |
-| `tasks/oracle-patch.sh` | Oracle patch advanced/manual phase | `./scripts/run_patch.sh <phase>` |
-| `tasks/health-check.sh` | Portal validation | local checks |
-
-## Offline Rule
-
-Jangan jalankan `git clone` dari internet di VM. Update project dilakukan dari laptop dengan membuat bundle baru:
-
-```powershell
-.\scripts\prepare-offline-assets.ps1 -SkipSemaphoreDownload
-```
-
-Lalu copy ulang `assets/repos/*.bundle` ke VM dan jalankan:
-
-```bash
-sudo bash scripts/import-project-bundles.sh
-sudo bash scripts/publish-portal-repo.sh
-```
-
-`scripts/import-project-bundles.sh` mempertahankan `inventory/targets.csv` yang sudah diupdate dari portal supaya hasil Add Host tidak tertimpa saat code refresh.
-
-## Backup
-
-Backup portal di VM:
-
-```bash
-sudo bash scripts/backup-portal.sh
-```
-
-Restore:
-
-```bash
-sudo bash scripts/restore-portal.sh --archive /dbaportal/backups/<backup>.tar.gz
-```

@@ -274,6 +274,13 @@
           "required": true,
           "values": "true,false",
           "default": "true"
+        },
+        {
+          "name": "CONFIRM_ADD_HOST",
+          "title": "Confirm add host",
+          "type": "string",
+          "required": false,
+          "default": ""
         }
       ]
     },
@@ -582,6 +589,85 @@
           "required": true,
           "values": "false,true",
           "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "Patch / 08 List Reports",
+      "app": "bash",
+      "script": "tasks/oracle-patch-list-reports.sh",
+      "description": "List recent Oracle Patch run states, summaries, and HTML report paths.",
+      "survey_vars": [
+        {
+          "name": "PATCH_ID",
+          "title": "Patch ID filter",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "OPERATOR",
+          "title": "Operator filter",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "HOSTS",
+          "title": "Host filter",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "LIMIT",
+          "title": "Limit",
+          "type": "string",
+          "required": true,
+          "default": "20"
+        }
+      ]
+    },
+    {
+      "name": "Patch / 09 Export Report",
+      "app": "bash",
+      "script": "tasks/oracle-patch-export-report.sh",
+      "description": "Copy the latest or selected Oracle Patch HTML report to /dbaportal/exports/patch-reports.",
+      "survey_vars": [
+        {
+          "name": "RUN_ID",
+          "title": "Run ID",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "PATCH_ID",
+          "title": "Patch ID filter",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "OPERATOR",
+          "title": "Operator filter",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "HOSTS",
+          "title": "Host filter",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "EXPORT_DIR",
+          "title": "Export directory",
+          "type": "string",
+          "required": false,
+          "default": "/dbaportal/exports/patch-reports"
         }
       ]
     },
