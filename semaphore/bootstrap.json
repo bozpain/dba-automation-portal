@@ -1302,7 +1302,7 @@
           "name": "00 Health Check",
           "app": "bash",
           "script": "tasks/oracle-replication-00-health-check.sh",
-          "description": "Validate Data Guard replication framework config and local repository readiness.",
+          "description": "Validate replication runtime, local repository readiness, render output, and shell syntax while reporting config review warnings.",
           "survey_vars": [
             {
               "name": "CONFIG",
