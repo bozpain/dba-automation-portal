@@ -1342,6 +1342,13 @@
               "default": "configs/my-dg.json"
             },
             {
+              "name": "FORCE",
+              "title": "Overwrite output config",
+              "type": "boolean",
+              "required": false,
+              "default": "false"
+            },
+            {
               "name": "EXTRA_ARGS",
               "title": "Extra CLI args",
               "type": "string",

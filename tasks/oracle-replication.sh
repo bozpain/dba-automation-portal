@@ -33,7 +33,7 @@ cd "${PROJECT_ROOT}"
 case "${ACTION}" in
   init-config)
     safe_rel_path "${OUTPUT_CONFIG}" "OUTPUT_CONFIG"
-    cmd=("${PYTHON_BIN}" "scripts/dgctl.py" "init-config" "--profile" "${PROFILE}" "--output" "${OUTPUT_CONFIG}")
+    cmd=("${PYTHON_BIN}" "scripts/dgctl.py" "init-config" "--profile" "${PROFILE}" "--output" "${OUTPUT_CONFIG}" "--non-interactive")
     ;;
   render)
     safe_rel_path "${CONFIG}" "CONFIG"
@@ -66,6 +66,14 @@ if bool_arg YES false; then
   case "${ACTION}" in
     setup-ssh|run)
       cmd+=("--yes")
+      ;;
+  esac
+fi
+
+if bool_arg FORCE false; then
+  case "${ACTION}" in
+    init-config)
+      cmd+=("--force")
       ;;
   esac
 fi
