@@ -96,6 +96,8 @@ Untuk fresh build: OS preparation, Grid/ASM, DB software, patch during install, 
 18 Setup Broker
 19 Validate Deployment
 20 Generate Report
+21 Full Workflow
+22 Resume Workflow
 99 Advanced Phase
 ```
 
@@ -103,8 +105,10 @@ Common survey variables:
 
 | Name | Type | Required | Default | Notes |
 | --- | --- | --- | --- | --- |
-| `CONFIG` | String | Yes | `configs/sample-single.json` | Relative path inside install framework repo |
+| `CONFIG` | String | Yes | `configs/gcp-single-gi-lab.json` | Relative path inside install framework repo |
 | `DRY_RUN` | Enum | Execute steps only | `true` | `true,false`; keep true until reviewed |
+| `FROM_PHASE` | String | No | empty | Optional start phase for Full/Resume workflow |
+| `TO_PHASE` | String | No | empty | Optional stop phase for Full/Resume workflow |
 | `EXTRA_ARGS` | String | No | empty | Example: `--allow-storage-changes` or `--allow-patch-apply` |
 
 Recommended first runs:
@@ -116,6 +120,12 @@ Recommended first runs:
 ```
 
 Use `99 Advanced Phase` only for manual actions not exposed as a dedicated template.
+
+Use `21 Full Workflow` for the consolidated install plus replication run. Keep
+`DRY_RUN=true` for review; for real execution add the required guardrails in
+`EXTRA_ARGS`, for example `--allow-storage-changes --allow-patch-apply`.
+Use `22 Resume Workflow` after a stopped/failed workflow, optionally with
+`FROM_PHASE` and `TO_PHASE`.
 
 ## Project: Oracle / Replication
 

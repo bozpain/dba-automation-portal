@@ -2,8 +2,9 @@
 """Bootstrap DBA Automation projects in Semaphore UI.
 
 The script uses only the Python standard library so it can run on the offline VM
-after Semaphore is installed. It is intentionally idempotent: existing resources
-are reused by name.
+after Semaphore is installed. It is intentionally idempotent: existing shared
+resources are reused by name, while task templates are reconciled so survey
+variables and playbooks stay current after a catalog change.
 """
 
 from __future__ import annotations
@@ -103,6 +104,25 @@ def create_or_get(api: SemaphoreApi, list_path: str, create_path: str, name: str
         return existing
 
     raise ApiError(f"Could not create/find {name}; response was {created!r}")
+
+
+def create_or_update(
+    api: SemaphoreApi,
+    list_path: str,
+    create_path: str,
+    update_path: str,
+    name: str,
+    payload: dict[str, Any],
+) -> int:
+    existing = first_id(api.request("GET", list_path), name)
+    if existing is not None:
+        update_payload = dict(payload)
+        update_payload["id"] = existing
+        api.request("PUT", update_path.format(id=existing), update_payload)
+        print(f"OK updated: {name} (id={existing})")
+        return existing
+
+    return create_or_get(api, list_path, create_path, name, payload)
 
 
 def delete_by_name(api: SemaphoreApi, list_path: str, delete_path: str, name: str) -> None:
@@ -243,10 +263,11 @@ def bootstrap_project(api: SemaphoreApi, project_cfg: dict[str, Any], shared: di
             "allow_override_args_in_task": bool(template.get("allow_override_args_in_task", False)),
             "survey_vars": [survey_var_payload(v) for v in template.get("survey_vars", [])],
         }
-        create_or_get(
+        create_or_update(
             api,
             f"/api/project/{project_id}/templates",
             f"/api/project/{project_id}/templates",
+            f"/api/project/{project_id}/templates/{{id}}",
             template["name"],
             payload,
         )

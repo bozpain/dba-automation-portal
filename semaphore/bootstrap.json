@@ -666,7 +666,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "EXTRA_ARGS",
@@ -688,7 +688,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "EXTRA_ARGS",
@@ -710,7 +710,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "EXTRA_ARGS",
@@ -732,7 +732,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -762,7 +762,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -792,7 +792,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -822,7 +822,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -852,7 +852,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -882,7 +882,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -912,7 +912,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -942,7 +942,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -972,7 +972,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -1002,7 +1002,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -1032,7 +1032,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -1062,7 +1062,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -1092,7 +1092,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -1122,7 +1122,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -1152,7 +1152,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -1182,7 +1182,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -1212,7 +1212,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -1242,7 +1242,95 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
+            },
+            {
+              "name": "EXTRA_ARGS",
+              "title": "Extra CLI args",
+              "type": "string",
+              "required": false,
+              "default": ""
+            }
+          ]
+        },
+        {
+          "name": "21 Full Workflow",
+          "app": "bash",
+          "script": "tasks/oracle-install-21-full-workflow.sh",
+          "description": "Run the consolidated install plus replication workflow from precheck through deployment validation.",
+          "survey_vars": [
+            {
+              "name": "CONFIG",
+              "title": "Config path",
+              "type": "string",
+              "required": true,
+              "default": "configs/gcp-single-gi-lab.json"
+            },
+            {
+              "name": "DRY_RUN",
+              "title": "Dry run",
+              "type": "enum",
+              "required": true,
+              "values": "true,false",
+              "default": "true"
+            },
+            {
+              "name": "FROM_PHASE",
+              "title": "From phase",
+              "type": "string",
+              "required": false,
+              "default": ""
+            },
+            {
+              "name": "TO_PHASE",
+              "title": "To phase",
+              "type": "string",
+              "required": false,
+              "default": ""
+            },
+            {
+              "name": "EXTRA_ARGS",
+              "title": "Extra CLI args",
+              "type": "string",
+              "required": false,
+              "default": ""
+            }
+          ]
+        },
+        {
+          "name": "22 Resume Workflow",
+          "app": "bash",
+          "script": "tasks/oracle-install-22-resume-workflow.sh",
+          "description": "Resume the consolidated workflow using existing state; optionally start or stop at a selected phase.",
+          "survey_vars": [
+            {
+              "name": "CONFIG",
+              "title": "Config path",
+              "type": "string",
+              "required": true,
+              "default": "configs/gcp-single-gi-lab.json"
+            },
+            {
+              "name": "DRY_RUN",
+              "title": "Dry run",
+              "type": "enum",
+              "required": true,
+              "values": "true,false",
+              "default": "true"
+            },
+            {
+              "name": "FROM_PHASE",
+              "title": "From phase",
+              "type": "string",
+              "required": false,
+              "default": ""
+            },
+            {
+              "name": "TO_PHASE",
+              "title": "To phase",
+              "type": "string",
+              "required": false,
+              "default": ""
             },
             {
               "name": "EXTRA_ARGS",
@@ -1264,7 +1352,7 @@
               "title": "Action",
               "type": "enum",
               "required": true,
-              "values": "validate-config,doctor,inventory,precheck,prepare-os,verify-installer,prepare-storage-rules,install-grid,configure-asm-storage,install-db-software,update-opatch,analyze-patch,apply-grid-patch,apply-db-patch,apply-ojvm-patch,datapatch,patch-inventory,create-database,setup-active-dataguard,setup-dataguard-broker,validate-deployment,generate-plan,generate-report,switchover,failover,collect-diagnostics,cleanup-lab,rollback-framework",
+              "values": "validate-config,doctor,inventory,precheck,full,resume,prepare-os,verify-installer,prepare-storage-rules,install-grid,configure-asm-storage,install-db-software,update-opatch,analyze-patch,apply-grid-patch,apply-db-patch,apply-ojvm-patch,datapatch,patch-inventory,create-database,setup-active-dataguard,setup-dataguard-broker,validate-deployment,generate-plan,generate-report,switchover,failover,collect-diagnostics,cleanup-lab,rollback-framework",
               "default": "validate-config"
             },
             {
@@ -1272,7 +1360,7 @@
               "title": "Config path",
               "type": "string",
               "required": true,
-              "default": "configs/sample-single.json"
+              "default": "configs/gcp-single-gi-lab.json"
             },
             {
               "name": "DRY_RUN",
@@ -1281,6 +1369,20 @@
               "required": true,
               "values": "true,false",
               "default": "true"
+            },
+            {
+              "name": "FROM_PHASE",
+              "title": "From phase",
+              "type": "string",
+              "required": false,
+              "default": ""
+            },
+            {
+              "name": "TO_PHASE",
+              "title": "To phase",
+              "type": "string",
+              "required": false,
+              "default": ""
             },
             {
               "name": "EXTRA_ARGS",
