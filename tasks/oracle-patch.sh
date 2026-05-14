@@ -93,7 +93,7 @@ check_active_locks() {
 
 check_active_locks
 
-cmd=("./scripts/run_patch.sh" "${PHASE}" "${PATCH_ID}" "--hosts" "${HOSTS}" "--operator" "${OPERATOR}")
+cmd=("bash" "./scripts/run_patch.sh" "${PHASE}" "${PATCH_ID}" "--hosts" "${HOSTS}" "--operator" "${OPERATOR}")
 
 if [[ -n "${CHANGE_ID}" ]]; then
   cmd+=("--change-id" "${CHANGE_ID}")

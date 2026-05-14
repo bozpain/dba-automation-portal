@@ -11,4 +11,4 @@ if [[ "${CONFIRM_FULL_PATCH}" != "RUN" ]]; then
   exit 1
 fi
 
-exec "${SCRIPT_DIR}/oracle-patch.sh" PHASE=full DRY_RUN=false "$@"
+exec bash "${SCRIPT_DIR}/oracle-patch.sh" PHASE=full DRY_RUN=false "$@"

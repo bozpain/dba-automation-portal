@@ -29,6 +29,7 @@ if ! bool_arg DRY_RUN true && [[ "${CONFIRM_ADD_HOST}" != "ADD" ]]; then
 fi
 
 cmd=(
+  "bash"
   "./scripts/add_host.sh"
   "--hosts" "${HOSTS}"
   "--app-name" "${APP_NAME}"
