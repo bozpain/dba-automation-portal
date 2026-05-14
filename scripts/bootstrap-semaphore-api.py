@@ -109,15 +109,18 @@ def survey_var_payload(item: dict[str, Any]) -> dict[str, Any]:
     payload = {
         "name": item["name"],
         "title": item.get("title", item["name"]),
-        "type": item.get("type", "string"),
+        "type": "" if item.get("type", "string") == "string" else item.get("type", ""),
         "required": bool(item.get("required", False)),
     }
     if item.get("default") is not None:
         payload["default_value"] = item.get("default")
         payload["default"] = item.get("default")
     if item.get("values"):
-        payload["values"] = item["values"]
-        payload["enum_values"] = {value.strip(): value.strip() for value in item["values"].split(",") if value.strip()}
+        payload["values"] = [
+            {"name": value.strip(), "value": value.strip()}
+            for value in item["values"].split(",")
+            if value.strip()
+        ]
     return payload
 
 
@@ -159,7 +162,8 @@ def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
             "project_id": project_id,
             "git_url": repo_cfg["url"],
             "url": repo_cfg["url"],
-            "branch": repo_cfg.get("branch", ""),
+            "branch": repo_cfg.get("branch", "master"),
+            "git_branch": repo_cfg.get("branch", "master"),
             "ssh_key_id": key_id,
         },
     )
@@ -190,7 +194,7 @@ def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
             "project_id": project_id,
             "json": json.dumps(env_cfg.get("env", {}), sort_keys=True),
             "env": json.dumps(env_cfg.get("env", {}), sort_keys=True),
-            "secrets": "[]",
+            "secrets": [],
         },
     )
 
@@ -205,7 +209,7 @@ def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
             "app": template.get("app", "bash"),
             "playbook": template["script"],
             "type": "task",
-            "arguments": template.get("arguments", []),
+            "arguments": json.dumps(template.get("arguments", [])),
             "allow_override_args_in_task": bool(template.get("allow_override_args_in_task", False)),
             "survey_vars": [survey_var_payload(v) for v in template.get("survey_vars", [])],
         }

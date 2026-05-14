@@ -53,7 +53,7 @@ for project in \
 do
   repo="${PORTAL_ROOT}/automation/projects/${project}"
   if [[ -d "${repo}/.git" ]]; then
-    commit="$(git -C "${repo}" rev-parse --short HEAD 2>/dev/null || echo unknown)"
+    commit="$(git -c safe.directory="${repo}" -C "${repo}" rev-parse --short HEAD 2>/dev/null || echo unknown)"
     echo "OK   ${project}: ${commit}"
   else
     echo "FAIL ${project}: missing ${repo}"

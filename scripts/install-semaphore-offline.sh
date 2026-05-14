@@ -107,7 +107,7 @@ main() {
     exit 1
   fi
   install -o root -g root -m 0755 "${tmpdir}/semaphore" "${portal_data_root}/bin/semaphore"
-  ln -sfn "${portal_data_root}/bin/semaphore" /usr/local/bin/semaphore
+  install -o root -g root -m 0755 "${tmpdir}/semaphore" /usr/local/bin/semaphore
   rm -rf "${tmpdir}"
 
   local access_key cookie_hash cookie_encryption
@@ -144,7 +144,7 @@ EOF
   systemctl daemon-reload
 
   set +e
-  run_as_semaphore "${portal_data_root}" "${portal_data_root}/bin/semaphore" migrate --config "${portal_data_root}/semaphore/config.json"
+  run_as_semaphore "${portal_data_root}" /usr/local/bin/semaphore migrate --config "${portal_data_root}/semaphore/config.json"
   local migrate_rc=$?
   set -e
   if [[ "${migrate_rc}" -ne 0 ]]; then
@@ -153,7 +153,7 @@ EOF
 
   if [[ "${skip_admin}" != "true" ]]; then
     set +e
-    run_as_semaphore "${portal_data_root}" "${portal_data_root}/bin/semaphore" user add \
+    run_as_semaphore "${portal_data_root}" /usr/local/bin/semaphore user add \
       --admin \
       --login "${admin_login}" \
       --name "${admin_name}" \

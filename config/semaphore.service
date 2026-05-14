@@ -11,7 +11,7 @@ Group=semaphore
 WorkingDirectory=__DBA_PORTAL_ROOT__/semaphore
 Environment=HOME=__DBA_PORTAL_ROOT__/home/semaphore
 Environment=TMPDIR=__DBA_PORTAL_ROOT__/tmp
-ExecStart=__DBA_PORTAL_ROOT__/bin/semaphore server --config __DBA_PORTAL_ROOT__/semaphore/config.json
+ExecStart=/usr/local/bin/semaphore server --config __DBA_PORTAL_ROOT__/semaphore/config.json
 Restart=on-failure
 RestartSec=10
 NoNewPrivileges=true

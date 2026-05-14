@@ -39,6 +39,9 @@ main() {
 
   local work_path="${portal_data_root}/automation/git/dba-automation-portal-work"
 
+  git config --global --add safe.directory "${bare_path}" >/dev/null 2>&1 || true
+  git config --global --add safe.directory "${work_path}" >/dev/null 2>&1 || true
+
   install -d -o semaphore -g semaphore -m 0755 "$(dirname "${bare_path}")"
   rm -rf "${work_path}"
   install -d -o semaphore -g semaphore -m 0755 "${work_path}"
@@ -64,7 +67,7 @@ main() {
     git clone --bare "${work_path}" "${bare_path}"
   else
     git -C "${work_path}" remote add portal "${bare_path}"
-    git -C "${work_path}" push --mirror portal
+    git -c safe.directory="${bare_path}" -C "${work_path}" push --mirror portal
   fi
 
   chown -R semaphore:semaphore "${work_path}" "${bare_path}"
