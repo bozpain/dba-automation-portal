@@ -78,6 +78,7 @@ Untuk fresh build: OS preparation, Grid/ASM, DB software, patch during install, 
 00 Health Check
 01 Validate Config
 02 Generate Plan
+03 Prepare Target Secrets
 03 Precheck
 04 Prepare OS
 05 Verify Installer
@@ -116,6 +117,7 @@ Recommended first runs:
 ```text
 01 Validate Config
 02 Generate Plan
+03 Prepare Target Secrets (DRY_RUN=true)
 03 Precheck  (DRY_RUN=true)
 ```
 

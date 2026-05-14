@@ -19,7 +19,7 @@ require_project_root "${PROJECT_ROOT}" "main.py"
 safe_rel_path "${CONFIG}" "CONFIG"
 
 case "${ACTION}" in
-  validate-config|doctor|inventory|precheck|full|resume|prepare-os|verify-installer|prepare-storage-rules|install-grid|configure-asm-storage|install-db-software|update-opatch|analyze-patch|apply-grid-patch|apply-db-patch|apply-ojvm-patch|datapatch|patch-inventory|create-database|setup-active-dataguard|setup-dataguard-broker|validate-deployment|generate-plan|generate-report|switchover|failover|collect-diagnostics|cleanup-lab|rollback-framework)
+  validate-config|doctor|inventory|precheck|full|resume|prepare-target-secrets|prepare-os|verify-installer|prepare-storage-rules|install-grid|configure-asm-storage|install-db-software|update-opatch|analyze-patch|apply-grid-patch|apply-db-patch|apply-ojvm-patch|datapatch|patch-inventory|create-database|setup-active-dataguard|setup-dataguard-broker|validate-deployment|generate-plan|generate-report|switchover|failover|collect-diagnostics|cleanup-lab|rollback-framework)
     ;;
   *)
     echo "ERROR: unsupported ACTION for oracle-install-replication: ${ACTION}" >&2

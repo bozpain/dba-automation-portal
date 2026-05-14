@@ -722,6 +722,36 @@
           ]
         },
         {
+          "name": "03 Prepare Target Secrets",
+          "app": "bash",
+          "script": "tasks/oracle-install-03-prepare-target-secrets.sh",
+          "description": "Write the config default Oracle password to root-only /etc/oracle-auto/secrets.env on target hosts.",
+          "survey_vars": [
+            {
+              "name": "CONFIG",
+              "title": "Config path",
+              "type": "string",
+              "required": true,
+              "default": "configs/gcp-single-gi-lab.json"
+            },
+            {
+              "name": "DRY_RUN",
+              "title": "Dry run",
+              "type": "enum",
+              "required": true,
+              "values": "true,false",
+              "default": "true"
+            },
+            {
+              "name": "EXTRA_ARGS",
+              "title": "Extra CLI args",
+              "type": "string",
+              "required": false,
+              "default": ""
+            }
+          ]
+        },
+        {
           "name": "03 Precheck",
           "app": "bash",
           "script": "tasks/oracle-install-03-precheck.sh",
