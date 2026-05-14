@@ -38,25 +38,83 @@
       "survey_vars": []
     },
     {
-      "name": "DBA / 10 Oracle Install Replication",
+      "name": "Install / 00 Health Check",
       "app": "bash",
-      "script": "tasks/oracle-install-replication.sh",
-      "description": "Run install, GI/DB, patch during install, Active Data Guard, and report actions.",
+      "script": "tasks/oracle-install-00-health-check.sh",
+      "description": "Validate install framework runtime, config, tools, and local repository readiness.",
       "survey_vars": [
-        {
-          "name": "ACTION",
-          "title": "Action",
-          "type": "enum",
-          "required": true,
-          "values": "validate-config,doctor,inventory,precheck,prepare-os,verify-installer,prepare-storage-rules,install-grid,configure-asm-storage,install-db-software,update-opatch,analyze-patch,apply-grid-patch,apply-db-patch,apply-ojvm-patch,datapatch,patch-inventory,create-database,setup-active-dataguard,setup-dataguard-broker,validate-deployment,generate-plan,generate-report,switchover,failover,collect-diagnostics,cleanup-lab,rollback-framework",
-          "default": "validate-config"
-        },
         {
           "name": "CONFIG",
           "title": "Config path",
           "type": "string",
           "required": true,
-          "default": "configs/sample-rac-dg.json"
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 01 Validate Config",
+      "app": "bash",
+      "script": "tasks/oracle-install-01-validate-config.sh",
+      "description": "Validate the install and optional Data Guard deployment config.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 02 Generate Plan",
+      "app": "bash",
+      "script": "tasks/oracle-install-02-generate-plan.sh",
+      "description": "Generate the ordered install and replication execution plan.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 03 Precheck",
+      "app": "bash",
+      "script": "tasks/oracle-install-03-precheck.sh",
+      "description": "Run precheck for OS, Grid, DB, patch, and Data Guard readiness.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
         },
         {
           "name": "DRY_RUN",
@@ -76,10 +134,781 @@
       ]
     },
     {
-      "name": "DBA / 20 Oracle Data Guard Replication",
+      "name": "Install / 04 Prepare OS",
+      "app": "bash",
+      "script": "tasks/oracle-install-04-prepare-os.sh",
+      "description": "Prepare OS packages, users, limits, kernel settings, and directories.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 05 Verify Installer",
+      "app": "bash",
+      "script": "tasks/oracle-install-05-verify-installer.sh",
+      "description": "Verify Oracle installer media and required source files.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 06 Prepare Storage",
+      "app": "bash",
+      "script": "tasks/oracle-install-06-prepare-storage.sh",
+      "description": "Prepare storage and udev rules for Oracle Grid/ASM.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 07 Install Grid",
+      "app": "bash",
+      "script": "tasks/oracle-install-07-install-grid.sh",
+      "description": "Install Oracle Grid Infrastructure.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 08 Configure ASM",
+      "app": "bash",
+      "script": "tasks/oracle-install-08-configure-asm.sh",
+      "description": "Configure ASM disk groups and storage layout.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 09 Install DB Software",
+      "app": "bash",
+      "script": "tasks/oracle-install-09-install-db-software.sh",
+      "description": "Install Oracle database software only.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 10 Update OPatch",
+      "app": "bash",
+      "script": "tasks/oracle-install-10-update-opatch.sh",
+      "description": "Update OPatch in Grid and database homes.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 11 Analyze Patch",
+      "app": "bash",
+      "script": "tasks/oracle-install-11-analyze-patch.sh",
+      "description": "Analyze patch media and patch applicability before apply.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 12 Apply Grid Patch",
+      "app": "bash",
+      "script": "tasks/oracle-install-12-apply-grid-patch.sh",
+      "description": "Apply Grid Infrastructure patch with dry-run default.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 13 Apply DB Patch",
+      "app": "bash",
+      "script": "tasks/oracle-install-13-apply-db-patch.sh",
+      "description": "Apply database home patch with dry-run default.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 14 Apply OJVM Patch",
+      "app": "bash",
+      "script": "tasks/oracle-install-14-apply-ojvm-patch.sh",
+      "description": "Apply OJVM patch with dry-run default.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 15 Create Database",
+      "app": "bash",
+      "script": "tasks/oracle-install-15-create-database.sh",
+      "description": "Create the primary Oracle database.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 16 Patch Inventory",
+      "app": "bash",
+      "script": "tasks/oracle-install-16-patch-inventory.sh",
+      "description": "Collect and display Oracle patch inventory after install/patch phases.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 17 Setup Active Data Guard",
+      "app": "bash",
+      "script": "tasks/oracle-install-17-setup-active-dataguard.sh",
+      "description": "Configure physical standby and Active Data Guard from the fresh install workflow.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 18 Setup Broker",
+      "app": "bash",
+      "script": "tasks/oracle-install-18-setup-broker.sh",
+      "description": "Configure Data Guard Broker for the fresh install workflow.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 19 Validate Deployment",
+      "app": "bash",
+      "script": "tasks/oracle-install-19-validate-deployment.sh",
+      "description": "Validate database, listener, patch, and Data Guard deployment state.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 20 Generate Report",
+      "app": "bash",
+      "script": "tasks/oracle-install-20-generate-report.sh",
+      "description": "Generate the install and replication deployment report.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Install / 99 Advanced Phase",
+      "app": "bash",
+      "script": "tasks/oracle-install-replication.sh",
+      "description": "Advanced/manual runner for install, patch-during-install, Data Guard, report, switchover, failover, diagnostics, and rollback actions.",
+      "survey_vars": [
+        {
+          "name": "ACTION",
+          "title": "Action",
+          "type": "enum",
+          "required": true,
+          "values": "validate-config,doctor,inventory,precheck,prepare-os,verify-installer,prepare-storage-rules,install-grid,configure-asm-storage,install-db-software,update-opatch,analyze-patch,apply-grid-patch,apply-db-patch,apply-ojvm-patch,datapatch,patch-inventory,create-database,setup-active-dataguard,setup-dataguard-broker,validate-deployment,generate-plan,generate-report,switchover,failover,collect-diagnostics,cleanup-lab,rollback-framework",
+          "default": "validate-config"
+        },
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/sample-single.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Replication / 00 Health Check",
+      "app": "bash",
+      "script": "tasks/oracle-replication-00-health-check.sh",
+      "description": "Validate Data Guard replication framework config and local repository readiness.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/profiles/single-gi-physical.json"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Replication / 01 Init Config",
+      "app": "bash",
+      "script": "tasks/oracle-replication-01-init-config.sh",
+      "description": "Create a starter Data Guard config from a supported topology profile.",
+      "survey_vars": [
+        {
+          "name": "PROFILE",
+          "title": "Init profile",
+          "type": "enum",
+          "required": false,
+          "values": "single-gi-physical,rac-2node-physical,rac-2node-broker",
+          "default": "single-gi-physical"
+        },
+        {
+          "name": "OUTPUT_CONFIG",
+          "title": "Output config path",
+          "type": "string",
+          "required": false,
+          "default": "configs/my-dg.json"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Replication / 02 Validate Config",
+      "app": "bash",
+      "script": "tasks/oracle-replication-02-validate-config.sh",
+      "description": "Validate an existing Data Guard replication config.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/profiles/single-gi-physical.json"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Replication / 03 Setup SSH",
+      "app": "bash",
+      "script": "tasks/oracle-replication-03-setup-ssh.sh",
+      "description": "Bootstrap SSH access for Data Guard replication automation.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/profiles/single-gi-physical.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXECUTE",
+          "title": "Execute",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        },
+        {
+          "name": "YES",
+          "title": "Confirm yes",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Replication / 04 Plan",
+      "app": "bash",
+      "script": "tasks/oracle-replication-04-plan.sh",
+      "description": "Build the staged Data Guard replication execution plan.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/profiles/single-gi-physical.json"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Replication / 05 Render",
+      "app": "bash",
+      "script": "tasks/oracle-replication-05-render.sh",
+      "description": "Render generated scripts and files for the selected Data Guard config.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/profiles/single-gi-physical.json"
+        },
+        {
+          "name": "RENDER_DIR",
+          "title": "Render directory",
+          "type": "string",
+          "required": false,
+          "default": "rendered/my-dg"
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Replication / 06 Run",
+      "app": "bash",
+      "script": "tasks/oracle-replication-06-run.sh",
+      "description": "Run the staged Data Guard replication workflow with dry-run default.",
+      "survey_vars": [
+        {
+          "name": "CONFIG",
+          "title": "Config path",
+          "type": "string",
+          "required": true,
+          "default": "configs/profiles/single-gi-physical.json"
+        },
+        {
+          "name": "DRY_RUN",
+          "title": "Dry run",
+          "type": "enum",
+          "required": true,
+          "values": "true,false",
+          "default": "true"
+        },
+        {
+          "name": "EXECUTE",
+          "title": "Execute",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        },
+        {
+          "name": "YES",
+          "title": "Confirm yes",
+          "type": "enum",
+          "required": true,
+          "values": "false,true",
+          "default": "false"
+        },
+        {
+          "name": "FROM_STAGE",
+          "title": "From stage",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "TO_STAGE",
+          "title": "To stage",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "EXTRA_ARGS",
+          "title": "Extra CLI args",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ]
+    },
+    {
+      "name": "Replication / 99 Advanced Phase",
       "app": "bash",
       "script": "tasks/oracle-replication.sh",
-      "description": "Run Data Guard config, render, SSH bootstrap, dry-run, and staged execution.",
+      "description": "Advanced/manual runner for Data Guard config initialization, validation, SSH bootstrap, render, plan, and staged execution.",
       "survey_vars": [
         {
           "name": "ACTION",
@@ -94,7 +923,7 @@
           "title": "Config path",
           "type": "string",
           "required": true,
-          "default": "configs/profiles/rac-2node-broker.json"
+          "default": "configs/profiles/single-gi-physical.json"
         },
         {
           "name": "PROFILE",
@@ -102,7 +931,7 @@
           "type": "enum",
           "required": false,
           "values": "single-gi-physical,rac-2node-physical,rac-2node-broker",
-          "default": "rac-2node-broker"
+          "default": "single-gi-physical"
         },
         {
           "name": "OUTPUT_CONFIG",
