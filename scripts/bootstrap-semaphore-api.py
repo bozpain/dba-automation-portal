@@ -105,6 +105,14 @@ def create_or_get(api: SemaphoreApi, list_path: str, create_path: str, name: str
     raise ApiError(f"Could not create/find {name}; response was {created!r}")
 
 
+def delete_by_name(api: SemaphoreApi, list_path: str, delete_path: str, name: str) -> None:
+    existing = first_id(api.request("GET", list_path), name)
+    if existing is None:
+        return
+    api.request("DELETE", delete_path.format(id=existing))
+    print(f"OK removed deprecated: {name} (id={existing})")
+
+
 def survey_var_payload(item: dict[str, Any]) -> dict[str, Any]:
     payload = {
         "name": item["name"],
@@ -219,6 +227,14 @@ def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
             f"/api/project/{project_id}/templates",
             template["name"],
             payload,
+        )
+
+    for deprecated_name in catalog.get("deprecated_templates", []):
+        delete_by_name(
+            api,
+            f"/api/project/{project_id}/templates",
+            f"/api/project/{project_id}/templates/{{id}}",
+            deprecated_name,
         )
 
     print()

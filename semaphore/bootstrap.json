@@ -29,6 +29,10 @@
       "PYTHON_BIN": "python3.12"
     }
   },
+  "deprecated_templates": [
+    "DBA / 10 Oracle Install Replication",
+    "DBA / 20 Oracle Data Guard Replication"
+  ],
   "templates": [
     {
       "name": "DBA / 00 Portal Health Check",

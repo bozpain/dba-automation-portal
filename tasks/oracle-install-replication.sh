@@ -9,7 +9,7 @@ PROJECT_ROOT="${ORACLE_INSTALL_REPLICATION_ROOT:-/dbaportal/automation/projects/
 PYTHON_BIN="${PYTHON_BIN:-python3.12}"
 
 ACTION="$(get_arg ACTION validate-config)"
-CONFIG="$(get_arg CONFIG configs/sample-rac-dg.json)"
+CONFIG="$(get_arg CONFIG configs/sample-single.json)"
 DRY_RUN="$(get_arg DRY_RUN false)"
 EXTRA_ARGS="$(get_arg EXTRA_ARGS "")"
 

@@ -9,8 +9,8 @@ PROJECT_ROOT="${ORACLE_REPLICATION_ROOT:-/dbaportal/automation/projects/oracle-r
 PYTHON_BIN="${PYTHON_BIN:-python3.12}"
 
 ACTION="$(get_arg ACTION validate-config)"
-CONFIG="$(get_arg CONFIG configs/profiles/rac-2node-broker.json)"
-PROFILE="$(get_arg PROFILE rac-2node-broker)"
+CONFIG="$(get_arg CONFIG configs/profiles/single-gi-physical.json)"
+PROFILE="$(get_arg PROFILE single-gi-physical)"
 OUTPUT_CONFIG="$(get_arg OUTPUT_CONFIG configs/my-dg.json)"
 RENDER_DIR="$(get_arg RENDER_DIR rendered/my-dg)"
 FROM_STAGE="$(get_arg FROM_STAGE "")"
