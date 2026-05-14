@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Bootstrap the DBA Automation project in Semaphore UI.
+"""Bootstrap DBA Automation projects in Semaphore UI.
 
-This script uses only the Python standard library so it can run on the offline
-VM after Semaphore is installed. It is intentionally idempotent: existing
-resources are reused by name.
+The script uses only the Python standard library so it can run on the offline VM
+after Semaphore is installed. It is intentionally idempotent: existing resources
+are reused by name.
 """
 
 from __future__ import annotations
@@ -113,6 +113,10 @@ def delete_by_name(api: SemaphoreApi, list_path: str, delete_path: str, name: st
     print(f"OK removed deprecated: {name} (id={existing})")
 
 
+def project_id_by_name(api: SemaphoreApi, name: str) -> int | None:
+    return first_id(api.request("GET", "/api/projects"), name)
+
+
 def survey_var_payload(item: dict[str, Any]) -> dict[str, Any]:
     payload = {
         "name": item["name"],
@@ -132,8 +136,26 @@ def survey_var_payload(item: dict[str, Any]) -> dict[str, Any]:
     return payload
 
 
-def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
-    project_cfg = catalog["project"]
+def merged_config(project: dict[str, Any], shared: dict[str, Any], key: str) -> dict[str, Any]:
+    if key in project:
+        return project[key]
+    if key in shared:
+        return shared[key]
+    raise ApiError(f"Missing required catalog section: {key}")
+
+
+def project_entries(catalog: dict[str, Any]) -> list[dict[str, Any]]:
+    if "projects" in catalog:
+        return list(catalog["projects"])
+
+    project = dict(catalog["project"])
+    project["templates"] = catalog.get("templates", [])
+    if catalog.get("deprecated_templates"):
+        project["deprecated_templates"] = catalog["deprecated_templates"]
+    return [project]
+
+
+def bootstrap_project(api: SemaphoreApi, project_cfg: dict[str, Any], shared: dict[str, Any]) -> int:
     project_id = create_or_get(
         api,
         "/api/projects",
@@ -146,7 +168,7 @@ def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
         },
     )
 
-    key_cfg = catalog["key"]
+    key_cfg = merged_config(project_cfg, shared, "key")
     key_id = create_or_get(
         api,
         f"/api/project/{project_id}/keys",
@@ -154,12 +176,12 @@ def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
         key_cfg["name"],
         {
             "name": key_cfg["name"],
-            "type": "none",
+            "type": key_cfg.get("type", "none"),
             "project_id": project_id,
         },
     )
 
-    repo_cfg = catalog["repository"]
+    repo_cfg = merged_config(project_cfg, shared, "repository")
     repo_id = create_or_get(
         api,
         f"/api/project/{project_id}/repositories",
@@ -176,7 +198,7 @@ def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
         },
     )
 
-    inv_cfg = catalog["inventory"]
+    inv_cfg = merged_config(project_cfg, shared, "inventory")
     inventory_id = create_or_get(
         api,
         f"/api/project/{project_id}/inventory",
@@ -185,13 +207,13 @@ def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
         {
             "name": inv_cfg["name"],
             "project_id": project_id,
-            "type": "static",
+            "type": inv_cfg.get("type", "static"),
             "inventory": inv_cfg["inventory"],
             "ssh_key_id": key_id,
         },
     )
 
-    env_cfg = catalog["environment"]
+    env_cfg = merged_config(project_cfg, shared, "environment")
     environment_id = create_or_get(
         api,
         f"/api/project/{project_id}/environment",
@@ -206,7 +228,7 @@ def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
         },
     )
 
-    for template in catalog["templates"]:
+    for template in project_cfg.get("templates", []):
         payload = {
             "name": template["name"],
             "description": template.get("description", ""),
@@ -229,7 +251,7 @@ def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
             payload,
         )
 
-    for deprecated_name in catalog.get("deprecated_templates", []):
+    for deprecated_name in project_cfg.get("deprecated_templates", []):
         delete_by_name(
             api,
             f"/api/project/{project_id}/templates",
@@ -237,9 +259,37 @@ def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
             deprecated_name,
         )
 
+    print(f"Project ready: {project_cfg['name']} (id={project_id})")
+    return project_id
+
+
+def cleanup_legacy_projects(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
+    for cleanup in catalog.get("legacy_project_cleanups", []):
+        project_id = project_id_by_name(api, cleanup["project"])
+        if project_id is None:
+            continue
+        for template_name in cleanup.get("templates", []):
+            delete_by_name(
+                api,
+                f"/api/project/{project_id}/templates",
+                f"/api/project/{project_id}/templates/{{id}}",
+                template_name,
+            )
+
+
+def bootstrap(api: SemaphoreApi, catalog: dict[str, Any]) -> None:
+    shared = catalog.get("shared", catalog)
+    projects = project_entries(catalog)
+    for project_cfg in projects:
+        bootstrap_project(api, project_cfg, shared)
+    cleanup_legacy_projects(api, catalog)
+
     print()
     print("Bootstrap completed.")
-    print(f"Project: {project_cfg['name']} (id={project_id})")
+    print("Projects:")
+    for project_cfg in projects:
+        print(f"- {project_cfg['name']}")
+    repo_cfg = merged_config(projects[0], shared, "repository")
     print(f"Repository: {repo_cfg['url']}")
 
 

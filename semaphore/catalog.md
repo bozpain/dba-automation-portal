@@ -2,64 +2,101 @@
 
 Gunakan catalog ini setelah `scripts/install-semaphore-offline.sh`, `scripts/import-project-bundles.sh`, dan `scripts/publish-portal-repo.sh` selesai dijalankan di VM.
 
-## Project
+Bootstrap membuat beberapa Project agar daftar template tidak terlalu panjang.
 
-Create Project:
+## Shared Setup
 
-```text
-Name: DBA Automation
-```
-
-## Repository
-
-Create Repository:
+Semua Project memakai repository, inventory, credential, dan environment yang sama:
 
 ```text
-Name: dba-automation-portal
+Repository: dba-automation-portal
 URL: file:///dbaportal/automation/git/dba-automation-portal.git
 Branch: master
+Inventory: Local Runner
+Environment: DBA Automation Defaults
 ```
 
-Jika UI meminta credential untuk repository lokal, pilih credential type yang paling minimal atau empty/none jika tersedia.
+## Project: DBA / Portal Ops
 
-## Template 1: Portal Health Check
+Untuk operasi portal dan health check runner.
 
 ```text
-Name: 00 - Portal Health Check
-App: Bash
-Repository: dba-automation-portal
-Script: tasks/health-check.sh
+00 Portal Health Check
 ```
 
 Survey Variables: tidak ada.
 
-## Install Templates
+## Project: Oracle / Patch
 
-Pakai group ini untuk fresh build: OS preparation, Grid/ASM, DB software, patch during install, create database, lalu optional Active Data Guard/Broker.
+Untuk patching database/GI yang sudah ada.
 
 ```text
-Install / 00 Health Check
-Install / 01 Validate Config
-Install / 02 Generate Plan
-Install / 03 Precheck
-Install / 04 Prepare OS
-Install / 05 Verify Installer
-Install / 06 Prepare Storage
-Install / 07 Install Grid
-Install / 08 Configure ASM
-Install / 09 Install DB Software
-Install / 10 Update OPatch
-Install / 11 Analyze Patch
-Install / 12 Apply Grid Patch
-Install / 13 Apply DB Patch
-Install / 14 Apply OJVM Patch
-Install / 15 Create Database
-Install / 16 Patch Inventory
-Install / 17 Setup Active Data Guard
-Install / 18 Setup Broker
-Install / 19 Validate Deployment
-Install / 20 Generate Report
-Install / 99 Advanced Phase
+00 Health Check
+01 Add Host
+02 Inventory
+03 Status
+04 Dry Run Full Pipeline
+05 Precheck
+06 Full Patch
+07 Resume
+08 List Reports
+09 Export Report
+99 Advanced Phase
+```
+
+Recommended first runs:
+
+```text
+00 Health Check
+01 Add Host  (DRY_RUN=true)
+02 Inventory
+04 Dry Run Full Pipeline
+```
+
+Common patch run variables for templates `04`, `05`, `06`, `07`, and `99`:
+
+| Name | Type | Required | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `PATCH_ID` | String | Yes | `19.30` | Must exist in `manifests/` |
+| `HOSTS` | String | Yes | empty | Comma-separated hosts/IPs |
+| `OPERATOR` | String | Yes | empty | Operator name for audit trail |
+| `CHANGE_ID` | String | Depends | empty | Required for Full Patch, optional elsewhere |
+| `ENVIRONMENT` | Enum | Depends | `lab` | `lab,dev,sit,uat,prod,drc`; required for Full Patch |
+| `RUN_REASON` | String | No | empty | Short reason for audit trail |
+| `FORCE_RUN` | Enum | Yes | `false` | `false,true`; use only after review |
+| `CONFIRM_FULL_PATCH` | String | Full Patch only | empty | Must be `RUN` for Full Patch |
+| `RESUME_FROM_RUN_ID` | String | Resume only | empty | Required for Resume |
+| `PHASE` | Advanced only | `status` | `precheck,execute,apply,ojvm,datapatch,postcheck,full,resume,status` |
+| `DRY_RUN` | Advanced only | `true` | `true,false` |
+| `EXTRA_ARGS` | Advanced only | empty | Extra CLI arguments |
+
+## Project: Oracle / Install
+
+Untuk fresh build: OS preparation, Grid/ASM, DB software, patch during install, create database, lalu optional Active Data Guard/Broker.
+
+```text
+00 Health Check
+01 Validate Config
+02 Generate Plan
+03 Precheck
+04 Prepare OS
+05 Verify Installer
+06 Prepare Storage
+07 Install Grid
+08 Configure ASM
+09 Install DB Software
+10 Update OPatch
+11 Analyze Patch
+12 Apply Grid Patch
+13 Apply DB Patch
+14 Apply OJVM Patch
+15 Create Database
+16 Patch Inventory
+17 Setup Active Data Guard
+18 Setup Broker
+19 Validate Deployment
+20 Generate Report
+99 Advanced Phase
 ```
 
 Common survey variables:
@@ -73,26 +110,26 @@ Common survey variables:
 Recommended first runs:
 
 ```text
-Install / 01 Validate Config
-Install / 02 Generate Plan
-Install / 03 Precheck  (DRY_RUN=true)
+01 Validate Config
+02 Generate Plan
+03 Precheck  (DRY_RUN=true)
 ```
 
-Use `Install / 99 Advanced Phase` only for manual actions not exposed as a dedicated template.
+Use `99 Advanced Phase` only for manual actions not exposed as a dedicated template.
 
-## Replication Templates
+## Project: Oracle / Replication
 
-Pakai group ini kalau database/GI/ASM sudah ada dan kita hanya mau setup Data Guard/replication.
+Untuk database/GI/ASM yang sudah ada, lalu setup Data Guard/replication saja.
 
 ```text
-Replication / 00 Health Check
-Replication / 01 Init Config
-Replication / 02 Validate Config
-Replication / 03 Setup SSH
-Replication / 04 Plan
-Replication / 05 Render
-Replication / 06 Run
-Replication / 99 Advanced Phase
+00 Health Check
+01 Init Config
+02 Validate Config
+03 Setup SSH
+04 Plan
+05 Render
+06 Run
+99 Advanced Phase
 ```
 
 Common survey variables:
@@ -113,181 +150,14 @@ Common survey variables:
 Recommended first runs:
 
 ```text
-Replication / 01 Init Config
-Replication / 02 Validate Config
-Replication / 04 Plan
-Replication / 05 Render
-Replication / 06 Run  (DRY_RUN=true EXECUTE=false)
+01 Init Config
+02 Validate Config
+04 Plan
+05 Render
+06 Run  (DRY_RUN=true EXECUTE=false)
 ```
 
 `Validate Config` memang akan menolak nilai `example.com`; copy profile ke config final dan isi hostname/IP real sebelum change window.
-## Patch Templates
-
-Gunakan urutan ini sebagai operator flow:
-
-```text
-Patch / 00 Health Check
-Patch / 01 Add Host
-Patch / 02 Inventory
-Patch / 03 Status
-Patch / 04 Dry Run Full Pipeline
-Patch / 05 Precheck
-Patch / 06 Full Patch
-Patch / 07 Resume
-Patch / 08 List Reports
-Patch / 09 Export Report
-Patch / 99 Advanced Phase
-```
-
-### Patch / 00 Health Check
-
-```text
-App: Bash
-Repository: dba-automation-portal
-Script: tasks/oracle-patch-health-check.sh
-```
-
-| Name | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `PATCH_ID` | String | Yes | `19.30` | Patch repository/manifest to validate |
-| `HOSTS` | String | No | empty | Optional comma-separated host inventory check |
-| `CHECK_SSH` | Enum | Yes | `false` | `false,true`; true checks SSH batch mode |
-
-### Patch / 01 Add Host
-
-```text
-App: Bash
-Repository: dba-automation-portal
-Script: tasks/oracle-patch-add-host.sh
-```
-
-| Name | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `HOSTS` | String | Yes | empty | Comma-separated hosts/IPs |
-| `APP_NAME` | String | Yes | empty | Application name in patch inventory |
-| `DB_HOME` | String | Yes | `/u01/app/oracle/product/19c/dbhome_1` | Oracle DB home |
-| `GRID_HOME` | String | No | empty | Empty for Single FS |
-| `DB_USER` | String | Yes | `oracle` | Oracle software owner |
-| `GRID_USER` | String | No | empty | Empty for Single FS |
-| `ALLOW_EXISTING_APP` | Enum | Yes | `false` | `false,true`; true when adding another node for same app |
-| `ALLOW_APP_CONFIG_DRIFT` | Enum | Yes | `false` | `false,true`; use only when app rows intentionally differ |
-| `DRY_RUN` | Enum | Yes | `true` | `true,false`; dry-run does not SSH or update inventory |
-| `SKIP_SSH_COPY_ID` | Enum | Yes | `true` | `true,false`; keep true when runner SSH key is already installed |
-| `CONFIRM_ADD_HOST` | String | No | empty | Must be `ADD` when `DRY_RUN=false` |
-
-Recommended first runs:
-
-```text
-HOSTS=<host> APP_NAME=<app> DB_HOME=/u01/app/oracle/product/19c/dbhome_1 DB_USER=oracle DRY_RUN=true
-HOSTS=<host> APP_NAME=<app> DB_HOME=/u01/app/oracle/product/19c/dbhome_1 DB_USER=oracle DRY_RUN=false SKIP_SSH_COPY_ID=true
-```
-
-### Patch / 02 Inventory
-
-```text
-App: Bash
-Repository: dba-automation-portal
-Script: tasks/oracle-patch-inventory.sh
-```
-
-| Name | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `APP_NAME` | String | No | empty | Optional app filter |
-| `HOSTS` | String | No | empty | Optional comma-separated host filter |
-
-### Patch / 03 Status
-
-```text
-App: Bash
-Repository: dba-automation-portal
-Script: tasks/oracle-patch-status.sh
-```
-
-| Name | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `PATCH_ID` | String | Yes | `19.30` | Must exist in `manifests/` |
-| `HOSTS` | String | Yes | empty | Comma-separated hosts/IPs |
-| `OPERATOR` | String | Yes | empty | Operator name used by prior run |
-| `RESUME_FROM_RUN_ID` | String | No | empty | Limit status up to a specific run |
-
-### Patch / 04 Dry Run Full Pipeline
-
-```text
-App: Bash
-Repository: dba-automation-portal
-Script: tasks/oracle-patch-dry-run.sh
-```
-
-### Patch / 05 Precheck
-
-```text
-App: Bash
-Repository: dba-automation-portal
-Script: tasks/oracle-patch-precheck.sh
-```
-
-### Patch / 06 Full Patch
-
-```text
-App: Bash
-Repository: dba-automation-portal
-Script: tasks/oracle-patch-full.sh
-```
-
-Requires `CONFIRM_FULL_PATCH=RUN`.
-
-### Patch / 07 Resume
-
-```text
-App: Bash
-Repository: dba-automation-portal
-Script: tasks/oracle-patch-resume.sh
-```
-
-### Patch / 99 Advanced Phase
-
-```text
-App: Bash
-Repository: dba-automation-portal
-Script: tasks/oracle-patch.sh
-```
-
-### Patch / 08 List Reports
-
-```text
-App: Bash
-Repository: dba-automation-portal
-Script: tasks/oracle-patch-list-reports.sh
-```
-
-Optional filters: `PATCH_ID`, `OPERATOR`, `HOSTS`, and `LIMIT`.
-
-### Patch / 09 Export Report
-
-```text
-App: Bash
-Repository: dba-automation-portal
-Script: tasks/oracle-patch-export-report.sh
-```
-
-Use `RUN_ID` for a specific report, or filters `PATCH_ID`, `OPERATOR`, and `HOSTS` to export the latest matching report. Default export path is `/dbaportal/exports/patch-reports`.
-
-Common patch run variables for templates `04`, `05`, `06`, `07`, and `99`:
-
-| Name | Type | Required | Default | Notes |
-| --- | --- | --- | --- | --- |
-| `PATCH_ID` | String | Yes | `19.30` | Must exist in `manifests/` |
-| `HOSTS` | String | Yes | empty | Comma-separated hosts/IPs |
-| `OPERATOR` | String | Yes | empty | Operator name for audit trail |
-| `CHANGE_ID` | String | Depends | empty | Required for Full Patch, optional elsewhere |
-| `ENVIRONMENT` | Enum | Depends | `lab` | `lab,dev,sit,uat,prod,drc`; required for Full Patch |
-| `RUN_REASON` | String | No | empty | Short reason for audit trail |
-| `FORCE_RUN` | Enum | Yes | `false` | `false,true`; use only after review |
-| `CONFIRM_FULL_PATCH` | String | Full Patch only | empty | Must be `RUN` for Full Patch |
-| `RESUME_FROM_RUN_ID` | String | Resume only | empty | Required for Resume |
-| `PHASE` | Advanced only | `status` | `precheck,execute,apply,ojvm,datapatch,postcheck,full,resume,status` |
-| `DRY_RUN` | Advanced only | `true` | `true,false` |
-| `EXTRA_ARGS` | Advanced only | empty | Extra CLI arguments |
 
 ## Operational Guardrails
 
