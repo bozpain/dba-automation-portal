@@ -60,6 +60,7 @@ safe_rel_path() {
 append_extra_args() {
   local -n command_ref="$1"
   local extra="${2:-}"
+  extra="${extra#EXTRA_ARGS=}"
   if [[ -n "${extra}" ]]; then
     local extra_parts=()
     read -r -a extra_parts <<< "${extra}"
@@ -72,4 +73,3 @@ print_command() {
   printf ' %q' "$@"
   printf '\n'
 }
-

@@ -109,7 +109,7 @@ Common survey variables:
 | `DRY_RUN` | Enum | Execute steps only | `true` | `true,false`; keep true until reviewed |
 | `FROM_PHASE` | String | No | empty | Optional start phase for Full/Resume workflow |
 | `TO_PHASE` | String | No | empty | Optional stop phase for Full/Resume workflow |
-| `EXTRA_ARGS` | String | No | empty | Example: `--allow-storage-changes` or `--allow-patch-apply`; `03 Precheck` already defaults to `--no-resume --continue-on-fail` |
+| `EXTRA_ARGS` | String | No | empty | Enter only the CLI flags, for example `--allow-storage-changes --allow-patch-apply`; do not prefix the value with `EXTRA_ARGS=`. `03 Precheck` already defaults to `--no-resume --continue-on-fail` |
 
 Recommended first runs:
 
