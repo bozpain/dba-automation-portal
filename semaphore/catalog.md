@@ -78,11 +78,10 @@ Untuk fresh build: OS preparation, Grid/ASM, DB software, patch during install, 
 00 Health Check
 01 Validate Config
 02 Generate Plan
-03 Prepare Target Secrets
 03 Precheck
 04 Prepare OS
 05 Verify Installer
-06 Prepare Storage
+06 Prepare Storage Rules
 07 Install Grid
 08 Configure ASM
 09 Install DB Software
@@ -110,14 +109,13 @@ Common survey variables:
 | `DRY_RUN` | Enum | Execute steps only | `true` | `true,false`; keep true until reviewed |
 | `FROM_PHASE` | String | No | empty | Optional start phase for Full/Resume workflow |
 | `TO_PHASE` | String | No | empty | Optional stop phase for Full/Resume workflow |
-| `EXTRA_ARGS` | String | No | empty | Example: `--allow-storage-changes` or `--allow-patch-apply` |
+| `EXTRA_ARGS` | String | No | empty | Example: `--allow-storage-changes` or `--allow-patch-apply`; `03 Precheck` already defaults to `--no-resume --continue-on-fail` |
 
 Recommended first runs:
 
 ```text
 01 Validate Config
 02 Generate Plan
-03 Prepare Target Secrets (DRY_RUN=true)
 03 Precheck  (DRY_RUN=true)
 ```
 

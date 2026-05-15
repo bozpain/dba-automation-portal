@@ -654,6 +654,10 @@
       "name": "Oracle / Install",
       "alert": false,
       "max_parallel_tasks": 1,
+      "deprecated_templates": [
+        "03 Prepare Target Secrets",
+        "06 Prepare Storage"
+      ],
       "templates": [
         {
           "name": "00 Health Check",
@@ -722,40 +726,10 @@
           ]
         },
         {
-          "name": "03 Prepare Target Secrets",
-          "app": "bash",
-          "script": "tasks/oracle-install-03-prepare-target-secrets.sh",
-          "description": "Write the config default Oracle password to root-only /etc/oracle-auto/secrets.env on target hosts.",
-          "survey_vars": [
-            {
-              "name": "CONFIG",
-              "title": "Config path",
-              "type": "string",
-              "required": true,
-              "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "DRY_RUN",
-              "title": "Dry run",
-              "type": "enum",
-              "required": true,
-              "values": "true,false",
-              "default": "true"
-            },
-            {
-              "name": "EXTRA_ARGS",
-              "title": "Extra CLI args",
-              "type": "string",
-              "required": false,
-              "default": ""
-            }
-          ]
-        },
-        {
           "name": "03 Precheck",
           "app": "bash",
           "script": "tasks/oracle-install-03-precheck.sh",
-          "description": "Run precheck for OS, Grid, DB, patch, and Data Guard readiness.",
+          "description": "Run a fresh precheck for OS, Grid, DB, patch, and Data Guard readiness; continue through all checks for complete review.",
           "survey_vars": [
             {
               "name": "CONFIG",
@@ -842,10 +816,10 @@
           ]
         },
         {
-          "name": "06 Prepare Storage",
+          "name": "06 Prepare Storage Rules",
           "app": "bash",
           "script": "tasks/oracle-install-06-prepare-storage.sh",
-          "description": "Prepare storage and udev rules for Oracle Grid/ASM.",
+          "description": "Prepare ASM device rules and symlinks before Grid installation.",
           "survey_vars": [
             {
               "name": "CONFIG",
