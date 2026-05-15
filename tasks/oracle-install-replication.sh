@@ -31,6 +31,18 @@ cd "${PROJECT_ROOT}"
 
 cmd=("${PYTHON_BIN}" "main.py" "${ACTION}" "--config" "${CONFIG}")
 
+case "${ACTION}" in
+  full|resume|prepare-storage-rules|configure-asm-storage)
+    cmd+=("--allow-storage-changes")
+    ;;
+esac
+
+case "${ACTION}" in
+  full|resume|update-opatch|analyze-patch|apply-grid-patch|apply-db-patch|apply-ojvm-patch|datapatch)
+    cmd+=("--allow-patch-apply")
+    ;;
+esac
+
 if [[ "${DRY_RUN,,}" == "true" ]]; then
   case "${ACTION}" in
     validate-config|doctor|generate-plan|generate-report)
