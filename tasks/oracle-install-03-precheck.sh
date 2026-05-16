@@ -5,5 +5,5 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 exec bash "${SCRIPT_DIR}/oracle-install-replication.sh" \
   "ACTION=precheck" \
   "DRY_RUN=true" \
-  "EXTRA_ARGS=--no-resume --continue-on-fail" \
+  "EXTRA_ARGS=--continue-on-fail" \
   "$@"

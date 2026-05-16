@@ -729,7 +729,7 @@
           "name": "03 Precheck",
           "app": "bash",
           "script": "tasks/oracle-install-03-precheck.sh",
-          "description": "Run a fresh precheck for OS, Grid, DB, patch, and Data Guard readiness; continue through all checks for complete review.",
+          "description": "Run resumable precheck for OS, Grid, DB, patch, and Data Guard readiness; continue through remaining checks for complete review.",
           "survey_vars": [
             {
               "name": "CONFIG",

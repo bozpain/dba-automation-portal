@@ -109,7 +109,7 @@ Common survey variables:
 | `DRY_RUN` | Enum | Execute steps only | `true` | `true,false`; keep true until reviewed |
 | `FROM_PHASE` | String | No | empty | Optional start phase for Full/Resume workflow |
 | `TO_PHASE` | String | No | empty | Optional stop phase for Full/Resume workflow |
-| `EXTRA_ARGS` | String | No | empty | Enter only extra CLI flags; do not prefix with `EXTRA_ARGS=`. The portal wrapper already appends storage/patch guardrails for real storage, patch, full, and resume actions. `03 Precheck` already defaults to `--no-resume --continue-on-fail`. |
+| `EXTRA_ARGS` | String | No | empty | Enter only extra CLI flags; do not prefix with `EXTRA_ARGS=`. The portal wrapper already appends storage/patch guardrails for real storage, patch, full, and resume actions. `03 Precheck` already defaults to `--continue-on-fail`; add `--no-resume` only when you intentionally want a fresh audit run. |
 
 Recommended first runs:
 
