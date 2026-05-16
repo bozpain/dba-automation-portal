@@ -789,7 +789,7 @@
           "name": "05 Verify Installer",
           "app": "bash",
           "script": "tasks/oracle-install-05-verify-installer.sh",
-          "description": "Verify Oracle installer media and manifest-driven patch files in /u01/sources.",
+          "description": "Verify Oracle installer media, ASMLIB RPM, and manifest-driven patch files in /u01/sources.",
           "survey_vars": [
             {
               "name": "CONFIG",
@@ -849,7 +849,7 @@
           "name": "07 Install Grid",
           "app": "bash",
           "script": "tasks/oracle-install-07-install-grid.sh",
-          "description": "Install Oracle Grid Infrastructure.",
+          "description": "Install Oracle Grid Infrastructure; install-home step reruns, cleans unconfigured Grid home, re-unzips, and refreshes OPatch before RU apply.",
           "survey_vars": [
             {
               "name": "CONFIG",
@@ -909,7 +909,7 @@
           "name": "09 Install DB Software",
           "app": "bash",
           "script": "tasks/oracle-install-09-install-db-software.sh",
-          "description": "Install Oracle database software only.",
+          "description": "Install Oracle database software; install-home step reruns, cleans DB home before database registration, re-unzips, and refreshes OPatch before RU apply.",
           "survey_vars": [
             {
               "name": "CONFIG",
@@ -939,7 +939,7 @@
           "name": "10 Update OPatch",
           "app": "bash",
           "script": "tasks/oracle-install-10-update-opatch.sh",
-          "description": "Update OPatch in Grid and database homes.",
+          "description": "Manual/advanced OPatch replacement for existing Grid and database homes; fresh install updates OPatch inside install-grid and install-db-software.",
           "survey_vars": [
             {
               "name": "CONFIG",
