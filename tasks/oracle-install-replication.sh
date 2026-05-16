@@ -19,7 +19,7 @@ require_project_root "${PROJECT_ROOT}" "main.py"
 safe_rel_path "${CONFIG}" "CONFIG"
 
 case "${ACTION}" in
-  validate-config|doctor|inventory|precheck|full|resume|prepare-os|verify-installer|prepare-storage-rules|install-grid|configure-asm-storage|install-db-software|update-opatch|analyze-patch|apply-grid-patch|apply-db-patch|apply-ojvm-patch|datapatch|patch-inventory|create-database|setup-active-dataguard|setup-dataguard-broker|validate-deployment|generate-plan|generate-report|switchover|failover|collect-diagnostics|cleanup-lab|rollback-framework)
+  validate-config|doctor|inventory|precheck|full|resume|prepare-os|verify-installer|prepare-storage-rules|prepare-storage|install-grid|configure-asm-storage|install-db-software|update-opatch|analyze-patch|apply-grid-patch|apply-db-patch|apply-ojvm-patch|datapatch|patch-inventory|apply-patch|create-database|setup-active-dataguard|setup-dataguard-broker|validate-deployment|generate-plan|generate-report|switchover|failover|collect-diagnostics|cleanup-lab|rollback-framework)
     ;;
   *)
     echo "ERROR: unsupported ACTION for oracle-install-replication: ${ACTION}" >&2
@@ -32,13 +32,13 @@ cd "${PROJECT_ROOT}"
 cmd=("${PYTHON_BIN}" "main.py" "${ACTION}" "--config" "${CONFIG}")
 
 case "${ACTION}" in
-  full|resume|prepare-storage-rules|configure-asm-storage)
+  full|resume|prepare-storage-rules|prepare-storage|configure-asm-storage)
     cmd+=("--allow-storage-changes")
     ;;
 esac
 
 case "${ACTION}" in
-  full|resume|update-opatch|analyze-patch|apply-grid-patch|apply-db-patch|apply-ojvm-patch|datapatch)
+  full|resume|update-opatch|analyze-patch|apply-grid-patch|apply-db-patch|apply-ojvm-patch|datapatch|apply-patch)
     cmd+=("--allow-patch-apply")
     ;;
 esac

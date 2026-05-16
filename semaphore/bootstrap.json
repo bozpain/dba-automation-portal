@@ -819,7 +819,7 @@
           "name": "06 Prepare Storage Rules",
           "app": "bash",
           "script": "tasks/oracle-install-06-prepare-storage.sh",
-          "description": "Prepare ASM device rules and symlinks before Grid installation.",
+          "description": "Prepare persistent ASM device paths and ASMLib labels before Grid installation.",
           "survey_vars": [
             {
               "name": "CONFIG",
@@ -1356,7 +1356,7 @@
               "title": "Action",
               "type": "enum",
               "required": true,
-              "values": "validate-config,doctor,inventory,precheck,full,resume,prepare-os,verify-installer,prepare-storage-rules,install-grid,configure-asm-storage,install-db-software,update-opatch,analyze-patch,apply-grid-patch,apply-db-patch,apply-ojvm-patch,datapatch,patch-inventory,create-database,setup-active-dataguard,setup-dataguard-broker,validate-deployment,generate-plan,generate-report,switchover,failover,collect-diagnostics,cleanup-lab,rollback-framework",
+              "values": "validate-config,doctor,inventory,precheck,full,resume,prepare-os,verify-installer,prepare-storage-rules,prepare-storage,install-grid,configure-asm-storage,install-db-software,update-opatch,analyze-patch,apply-grid-patch,apply-db-patch,apply-ojvm-patch,datapatch,patch-inventory,apply-patch,create-database,setup-active-dataguard,setup-dataguard-broker,validate-deployment,generate-plan,generate-report,switchover,failover,collect-diagnostics,cleanup-lab,rollback-framework",
               "default": "validate-config"
             },
             {

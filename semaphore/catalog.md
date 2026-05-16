@@ -119,7 +119,7 @@ Recommended first runs:
 03 Precheck  (DRY_RUN=true)
 ```
 
-Use `99 Advanced Phase` only for manual actions not exposed as a dedicated template.
+Use `99 Advanced Phase` only for manual actions not exposed as a dedicated template, including compatibility `prepare-storage` and aggregate `apply-patch`.
 
 Use `21 Full Workflow` for the consolidated install plus replication run. Keep
 `DRY_RUN=true` for review; for real execution add the required guardrails in
