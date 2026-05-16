@@ -660,7 +660,16 @@
         "10 Update OPatch",
         "11 Analyze Patch",
         "12 Apply Grid Patch",
-        "13 Apply DB Patch"
+        "13 Apply DB Patch",
+        "14 Apply OJVM Patch",
+        "15 Create Database",
+        "16 Patch Inventory",
+        "17 Setup Active Data Guard",
+        "18 Setup Broker",
+        "19 Validate Deployment",
+        "20 Generate Report",
+        "21 Full Workflow",
+        "22 Resume Workflow"
       ],
       "templates": [
         {
@@ -940,9 +949,9 @@
           ]
         },
         {
-          "name": "14 Apply OJVM Patch",
+          "name": "10 Apply OJVM Patch",
           "app": "bash",
-          "script": "tasks/oracle-install-14-apply-ojvm-patch.sh",
+          "script": "tasks/oracle-install-10-apply-ojvm-patch.sh",
           "description": "Apply OJVM patch with dry-run default.",
           "survey_vars": [
             {
@@ -970,9 +979,9 @@
           ]
         },
         {
-          "name": "15 Create Database",
+          "name": "11 Create Database",
           "app": "bash",
-          "script": "tasks/oracle-install-15-create-database.sh",
+          "script": "tasks/oracle-install-11-create-database.sh",
           "description": "Create the primary Oracle database.",
           "survey_vars": [
             {
@@ -1000,9 +1009,9 @@
           ]
         },
         {
-          "name": "16 Patch Inventory",
+          "name": "12 Patch Inventory",
           "app": "bash",
-          "script": "tasks/oracle-install-16-patch-inventory.sh",
+          "script": "tasks/oracle-install-12-patch-inventory.sh",
           "description": "Collect and display Oracle patch inventory after install/patch phases.",
           "survey_vars": [
             {
@@ -1030,9 +1039,9 @@
           ]
         },
         {
-          "name": "17 Setup Active Data Guard",
+          "name": "13 Setup Active Data Guard",
           "app": "bash",
-          "script": "tasks/oracle-install-17-setup-active-dataguard.sh",
+          "script": "tasks/oracle-install-13-setup-active-dataguard.sh",
           "description": "Configure physical standby and Active Data Guard from the fresh install workflow.",
           "survey_vars": [
             {
@@ -1060,9 +1069,9 @@
           ]
         },
         {
-          "name": "18 Setup Broker",
+          "name": "14 Setup Broker",
           "app": "bash",
-          "script": "tasks/oracle-install-18-setup-broker.sh",
+          "script": "tasks/oracle-install-14-setup-broker.sh",
           "description": "Configure Data Guard Broker for the fresh install workflow.",
           "survey_vars": [
             {
@@ -1090,9 +1099,9 @@
           ]
         },
         {
-          "name": "19 Validate Deployment",
+          "name": "15 Validate Deployment",
           "app": "bash",
-          "script": "tasks/oracle-install-19-validate-deployment.sh",
+          "script": "tasks/oracle-install-15-validate-deployment.sh",
           "description": "Validate database, listener, patch, and Data Guard deployment state.",
           "survey_vars": [
             {
@@ -1120,9 +1129,9 @@
           ]
         },
         {
-          "name": "20 Generate Report",
+          "name": "16 Generate Report",
           "app": "bash",
-          "script": "tasks/oracle-install-20-generate-report.sh",
+          "script": "tasks/oracle-install-16-generate-report.sh",
           "description": "Generate the install and replication deployment report.",
           "survey_vars": [
             {
@@ -1142,9 +1151,9 @@
           ]
         },
         {
-          "name": "21 Full Workflow",
+          "name": "17 Full Workflow",
           "app": "bash",
-          "script": "tasks/oracle-install-21-full-workflow.sh",
+          "script": "tasks/oracle-install-17-full-workflow.sh",
           "description": "Run the consolidated manifest-driven install, auto ASM storage, and replication workflow from precheck through deployment validation.",
           "survey_vars": [
             {
@@ -1186,9 +1195,9 @@
           ]
         },
         {
-          "name": "22 Resume Workflow",
+          "name": "18 Resume Workflow",
           "app": "bash",
-          "script": "tasks/oracle-install-22-resume-workflow.sh",
+          "script": "tasks/oracle-install-18-resume-workflow.sh",
           "description": "Resume the consolidated workflow using existing state; optionally start or stop at a selected phase.",
           "survey_vars": [
             {
@@ -1634,13 +1643,13 @@
         "Install / 07 Install Grid",
         "Install / 08 Configure ASM",
         "Install / 09 Install DB Software",
-        "Install / 14 Apply OJVM Patch",
-        "Install / 15 Create Database",
-        "Install / 16 Patch Inventory",
-        "Install / 17 Setup Active Data Guard",
-        "Install / 18 Setup Broker",
-        "Install / 19 Validate Deployment",
-        "Install / 20 Generate Report",
+        "Install / 10 Apply OJVM Patch",
+        "Install / 11 Create Database",
+        "Install / 12 Patch Inventory",
+        "Install / 13 Setup Active Data Guard",
+        "Install / 14 Setup Broker",
+        "Install / 15 Validate Deployment",
+        "Install / 16 Generate Report",
         "Install / 99 Advanced Phase",
         "Replication / 00 Health Check",
         "Replication / 01 Init Config",
