@@ -85,7 +85,6 @@ Untuk fresh build: OS preparation, Grid/ASM, DB software, manifest-driven patch 
 07 Install Grid
 08 Configure ASM
 09 Install DB Software
-10 Update OPatch
 11 Analyze Patch
 12 Apply Grid Patch
 13 Apply DB Patch
@@ -121,7 +120,6 @@ Recommended first runs:
 
 Use `99 Advanced Phase` only for manual actions not exposed as a dedicated template, including legacy compatibility `prepare-storage` and aggregate `apply-patch`. Prefer `06 Prepare Storage Rules` for the current multipath/non-multipath storage flow.
 Use `07 Install Grid` and `09 Install DB Software` knowing their install-home step reruns by default: unconfigured homes are cleaned, base homes are unzipped again, and OPatch is refreshed before RU apply.
-Use `10 Update OPatch` only for manual/advanced replacement on existing homes. Fresh install updates OPatch inside `07 Install Grid` and `09 Install DB Software`.
 
 Use `21 Full Workflow` for the consolidated install plus replication run. Keep
 `DRY_RUN=true` for review; for real execution add the required guardrails in

@@ -656,7 +656,8 @@
       "max_parallel_tasks": 1,
       "deprecated_templates": [
         "03 Prepare Target Secrets",
-        "06 Prepare Storage"
+        "06 Prepare Storage",
+        "10 Update OPatch"
       ],
       "templates": [
         {
@@ -910,36 +911,6 @@
           "app": "bash",
           "script": "tasks/oracle-install-09-install-db-software.sh",
           "description": "Install Oracle database software; install-home step reruns, cleans DB home before database registration, re-unzips, and refreshes OPatch before RU apply.",
-          "survey_vars": [
-            {
-              "name": "CONFIG",
-              "title": "Config path",
-              "type": "string",
-              "required": true,
-              "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "DRY_RUN",
-              "title": "Dry run",
-              "type": "enum",
-              "required": true,
-              "values": "true,false",
-              "default": "true"
-            },
-            {
-              "name": "EXTRA_ARGS",
-              "title": "Extra CLI args",
-              "type": "string",
-              "required": false,
-              "default": ""
-            }
-          ]
-        },
-        {
-          "name": "10 Update OPatch",
-          "app": "bash",
-          "script": "tasks/oracle-install-10-update-opatch.sh",
-          "description": "Manual/advanced OPatch replacement for existing Grid and database homes; fresh install updates OPatch inside install-grid and install-db-software.",
           "survey_vars": [
             {
               "name": "CONFIG",
@@ -1356,7 +1327,7 @@
               "title": "Action",
               "type": "enum",
               "required": true,
-              "values": "validate-config,doctor,inventory,precheck,full,resume,prepare-os,verify-installer,prepare-storage-rules,prepare-storage,install-grid,configure-asm-storage,install-db-software,update-opatch,analyze-patch,apply-grid-patch,apply-db-patch,apply-ojvm-patch,datapatch,patch-inventory,apply-patch,create-database,setup-active-dataguard,setup-dataguard-broker,validate-deployment,generate-plan,generate-report,switchover,failover,collect-diagnostics,cleanup-lab,rollback-framework",
+              "values": "validate-config,doctor,inventory,precheck,full,resume,prepare-os,verify-installer,prepare-storage-rules,prepare-storage,install-grid,configure-asm-storage,install-db-software,analyze-patch,apply-grid-patch,apply-db-patch,apply-ojvm-patch,datapatch,patch-inventory,apply-patch,create-database,setup-active-dataguard,setup-dataguard-broker,validate-deployment,generate-plan,generate-report,switchover,failover,collect-diagnostics,cleanup-lab,rollback-framework",
               "default": "validate-config"
             },
             {
@@ -1750,7 +1721,6 @@
         "Install / 07 Install Grid",
         "Install / 08 Configure ASM",
         "Install / 09 Install DB Software",
-        "Install / 10 Update OPatch",
         "Install / 11 Analyze Patch",
         "Install / 12 Apply Grid Patch",
         "Install / 13 Apply DB Patch",
