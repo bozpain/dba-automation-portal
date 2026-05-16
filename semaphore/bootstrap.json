@@ -657,7 +657,10 @@
       "deprecated_templates": [
         "03 Prepare Target Secrets",
         "06 Prepare Storage",
-        "10 Update OPatch"
+        "10 Update OPatch",
+        "11 Analyze Patch",
+        "12 Apply Grid Patch",
+        "13 Apply DB Patch"
       ],
       "templates": [
         {
@@ -911,96 +914,6 @@
           "app": "bash",
           "script": "tasks/oracle-install-09-install-db-software.sh",
           "description": "Install Oracle database software; install-home step reruns, cleans DB home before database registration, re-unzips, and refreshes OPatch before RU apply.",
-          "survey_vars": [
-            {
-              "name": "CONFIG",
-              "title": "Config path",
-              "type": "string",
-              "required": true,
-              "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "DRY_RUN",
-              "title": "Dry run",
-              "type": "enum",
-              "required": true,
-              "values": "true,false",
-              "default": "true"
-            },
-            {
-              "name": "EXTRA_ARGS",
-              "title": "Extra CLI args",
-              "type": "string",
-              "required": false,
-              "default": ""
-            }
-          ]
-        },
-        {
-          "name": "11 Analyze Patch",
-          "app": "bash",
-          "script": "tasks/oracle-install-11-analyze-patch.sh",
-          "description": "Analyze patch media and patch applicability before apply.",
-          "survey_vars": [
-            {
-              "name": "CONFIG",
-              "title": "Config path",
-              "type": "string",
-              "required": true,
-              "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "DRY_RUN",
-              "title": "Dry run",
-              "type": "enum",
-              "required": true,
-              "values": "true,false",
-              "default": "true"
-            },
-            {
-              "name": "EXTRA_ARGS",
-              "title": "Extra CLI args",
-              "type": "string",
-              "required": false,
-              "default": ""
-            }
-          ]
-        },
-        {
-          "name": "12 Apply Grid Patch",
-          "app": "bash",
-          "script": "tasks/oracle-install-12-apply-grid-patch.sh",
-          "description": "Apply Grid Infrastructure patch with dry-run default.",
-          "survey_vars": [
-            {
-              "name": "CONFIG",
-              "title": "Config path",
-              "type": "string",
-              "required": true,
-              "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "DRY_RUN",
-              "title": "Dry run",
-              "type": "enum",
-              "required": true,
-              "values": "true,false",
-              "default": "true"
-            },
-            {
-              "name": "EXTRA_ARGS",
-              "title": "Extra CLI args",
-              "type": "string",
-              "required": false,
-              "default": ""
-            }
-          ]
-        },
-        {
-          "name": "13 Apply DB Patch",
-          "app": "bash",
-          "script": "tasks/oracle-install-13-apply-db-patch.sh",
-          "description": "Apply database home patch with dry-run default.",
           "survey_vars": [
             {
               "name": "CONFIG",
@@ -1721,9 +1634,6 @@
         "Install / 07 Install Grid",
         "Install / 08 Configure ASM",
         "Install / 09 Install DB Software",
-        "Install / 11 Analyze Patch",
-        "Install / 12 Apply Grid Patch",
-        "Install / 13 Apply DB Patch",
         "Install / 14 Apply OJVM Patch",
         "Install / 15 Create Database",
         "Install / 16 Patch Inventory",

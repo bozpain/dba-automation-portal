@@ -85,9 +85,6 @@ Untuk fresh build: OS preparation, Grid/ASM, DB software, manifest-driven patch 
 07 Install Grid
 08 Configure ASM
 09 Install DB Software
-11 Analyze Patch
-12 Apply Grid Patch
-13 Apply DB Patch
 14 Apply OJVM Patch
 15 Create Database
 16 Patch Inventory
