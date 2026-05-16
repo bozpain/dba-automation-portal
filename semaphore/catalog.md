@@ -88,12 +88,11 @@ Untuk fresh build: OS preparation, Grid/ASM, DB software, manifest-driven patch 
 10 Apply OJVM Patch
 11 Create Database
 12 Patch Inventory
-13 Setup Active Data Guard
-14 Setup Broker
-15 Validate Deployment
-16 Generate Report
-17 Full Workflow
-18 Resume Workflow
+13 Configure Data Guard
+14 Validate Deployment
+15 Generate Report
+16 Full Workflow
+17 Resume Workflow
 99 Advanced Phase
 ```
 
@@ -118,10 +117,12 @@ Recommended first runs:
 Use `99 Advanced Phase` only for manual actions not exposed as a dedicated template, including legacy compatibility `prepare-storage` and aggregate `apply-patch`. Prefer `06 Prepare Storage Rules` for the current multipath/non-multipath storage flow.
 Use `07 Install Grid` and `09 Install DB Software` knowing their install-home step reruns by default: unconfigured homes are cleaned, base homes are unzipped again, and OPatch is refreshed before RU apply.
 
-Use `17 Full Workflow` for the consolidated install plus replication run. Keep
+`13 Configure Data Guard` supports `MODE=config`, `MODE=active-dataguard`, or `MODE=broker`. `MODE=config` follows `dataguard.configuration_method` from the selected JSON config.
+
+Use `16 Full Workflow` for the consolidated install plus replication run. Keep
 `DRY_RUN=true` for review; for real execution add the required guardrails in
 `EXTRA_ARGS` only for additional flags; the wrapper already appends `--allow-storage-changes` and `--allow-patch-apply` where required.
-Use `18 Resume Workflow` after a stopped/failed workflow, optionally with
+Use `17 Resume Workflow` after a stopped/failed workflow, optionally with
 `FROM_PHASE` and `TO_PHASE`.
 
 ## Project: Oracle / Replication
