@@ -72,7 +72,7 @@ Common patch run variables for templates `04`, `05`, `06`, `07`, and `99`:
 
 ## Project: Oracle / Install
 
-Untuk fresh build: OS preparation, Grid/ASM, DB software, patch during install, create database, lalu optional Active Data Guard/Broker.
+Untuk fresh build: OS preparation, Grid/ASM, DB software, manifest-driven patch during install, auto ASM storage, create database, lalu optional Active Data Guard/Broker.
 
 ```text
 00 Health Check
@@ -105,11 +105,11 @@ Common survey variables:
 
 | Name | Type | Required | Default | Notes |
 | --- | --- | --- | --- | --- |
-| `CONFIG` | String | Yes | `configs/gcp-single-gi-lab.json` | Relative path inside install framework repo |
+| `CONFIG` | String | Yes | `configs/gcp-single-gi-lab.json` | Relative path inside install framework repo. Config controls `installer.patch_manifest` and ASM disk sources (`uuid`/`DM_UUID`, `id_serial`/`ID_SERIAL`, `id_wwn`/`ID_WWN`, or `path`). |
 | `DRY_RUN` | Enum | Execute steps only | `true` | `true,false`; keep true until reviewed |
 | `FROM_PHASE` | String | No | empty | Optional start phase for Full/Resume workflow |
 | `TO_PHASE` | String | No | empty | Optional stop phase for Full/Resume workflow |
-| `EXTRA_ARGS` | String | No | empty | Enter only the CLI flags, for example `--allow-storage-changes --allow-patch-apply`; do not prefix the value with `EXTRA_ARGS=`. `03 Precheck` already defaults to `--no-resume --continue-on-fail` |
+| `EXTRA_ARGS` | String | No | empty | Enter only extra CLI flags; do not prefix with `EXTRA_ARGS=`. The portal wrapper already appends storage/patch guardrails for real storage, patch, full, and resume actions. `03 Precheck` already defaults to `--no-resume --continue-on-fail`. |
 
 Recommended first runs:
 
@@ -119,11 +119,11 @@ Recommended first runs:
 03 Precheck  (DRY_RUN=true)
 ```
 
-Use `99 Advanced Phase` only for manual actions not exposed as a dedicated template, including compatibility `prepare-storage` and aggregate `apply-patch`.
+Use `99 Advanced Phase` only for manual actions not exposed as a dedicated template, including legacy compatibility `prepare-storage` and aggregate `apply-patch`. Prefer `06 Prepare Storage Rules` for the current multipath/non-multipath storage flow.
 
 Use `21 Full Workflow` for the consolidated install plus replication run. Keep
 `DRY_RUN=true` for review; for real execution add the required guardrails in
-`EXTRA_ARGS`, for example `--allow-storage-changes --allow-patch-apply`.
+`EXTRA_ARGS` only for additional flags; the wrapper already appends `--allow-storage-changes` and `--allow-patch-apply` where required.
 Use `22 Resume Workflow` after a stopped/failed workflow, optionally with
 `FROM_PHASE` and `TO_PHASE`.
 

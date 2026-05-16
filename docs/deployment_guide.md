@@ -271,7 +271,7 @@ semaphore/catalog.md
 
 | Template | Purpose |
 | --- | --- |
-| `DBA / 10 Oracle Install Replication` | Run install, GI/DB, ADG, broker, and report actions |
+| `DBA / 10 Oracle Install Replication` | Run manifest-driven install, auto ASM storage, GI/DB, ADG, broker, and report actions |
 
 ### Data Guard
 

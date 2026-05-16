@@ -20,7 +20,7 @@ DBA Automation Portal adalah portal operasional berbasis Semaphore UI untuk meng
 
 | Domain | Framework | Purpose |
 | --- | --- | --- |
-| 🟥 Install + Replication | `oracle-install-replication-framework` | Build Oracle GI/ASM/DB, patch during install, Active Data Guard |
+| 🟥 Install + Replication | `oracle-install-replication-framework` | Build Oracle GI/ASM/DB, manifest-driven patch during install, auto ASM storage, Active Data Guard |
 | 🟩 Data Guard | `oracle-replication-framework` | Physical standby, broker, render/run staged replication |
 | 🟦 Patching | `oracle-patch-framework` | Inventory, precheck, full patch, resume, reports, evidence |
 

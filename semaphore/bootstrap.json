@@ -789,7 +789,7 @@
           "name": "05 Verify Installer",
           "app": "bash",
           "script": "tasks/oracle-install-05-verify-installer.sh",
-          "description": "Verify Oracle installer media and required source files.",
+          "description": "Verify Oracle installer media and manifest-driven patch files in /u01/sources.",
           "survey_vars": [
             {
               "name": "CONFIG",
@@ -819,7 +819,7 @@
           "name": "06 Prepare Storage Rules",
           "app": "bash",
           "script": "tasks/oracle-install-06-prepare-storage.sh",
-          "description": "Prepare persistent ASM device paths and ASMLib labels before Grid installation.",
+          "description": "Detect multipath, create /dev/asm udev rules from DM_UUID when needed, or resolve ID_SERIAL/ID_WWN/path before ASMLib labels.",
           "survey_vars": [
             {
               "name": "CONFIG",
@@ -879,7 +879,7 @@
           "name": "08 Configure ASM",
           "app": "bash",
           "script": "tasks/oracle-install-08-configure-asm.sh",
-          "description": "Configure ASM disk groups and storage layout.",
+          "description": "Set ASM diskstring ORCL:* and create OCR/DATA/RECO diskgroups from ASMLib labels.",
           "survey_vars": [
             {
               "name": "CONFIG",
@@ -1261,7 +1261,7 @@
           "name": "21 Full Workflow",
           "app": "bash",
           "script": "tasks/oracle-install-21-full-workflow.sh",
-          "description": "Run the consolidated install plus replication workflow from precheck through deployment validation.",
+          "description": "Run the consolidated manifest-driven install, auto ASM storage, and replication workflow from precheck through deployment validation.",
           "survey_vars": [
             {
               "name": "CONFIG",
@@ -1349,7 +1349,7 @@
           "name": "99 Advanced Phase",
           "app": "bash",
           "script": "tasks/oracle-install-replication.sh",
-          "description": "Advanced/manual runner for install, patch-during-install, Data Guard, report, switchover, failover, diagnostics, and rollback actions.",
+          "description": "Advanced/manual runner for manifest-driven install, auto ASM storage, patch-during-install, Data Guard, report, switchover, failover, diagnostics, and rollback actions.",
           "survey_vars": [
             {
               "name": "ACTION",
