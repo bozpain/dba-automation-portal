@@ -97,6 +97,7 @@ main() {
     "${portal_data_root}/automation/git" \
     "${portal_data_root}/backups" \
     "${portal_data_root}/exports" \
+    "${portal_data_root}/exports/install-reports" \
     "${portal_data_root}/exports/patch-reports"
 
   local tmpdir

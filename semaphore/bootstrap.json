@@ -16,6 +16,7 @@
       "name": "DBA Automation Defaults",
       "env": {
         "DBA_PORTAL_ROOT": "/dbaportal",
+        "DBA_CONTROL_HOST": "dba-control-01",
         "DBA_AUTOMATION_PROJECT_BASE": "/dbaportal/automation/projects",
         "ORACLE_INSTALL_REPLICATION_ROOT": "/dbaportal/automation/projects/oracle-install-replication-framework",
         "ORACLE_REPLICATION_ROOT": "/dbaportal/automation/projects/oracle-replication-framework",

@@ -152,6 +152,7 @@ The installer creates:
 /dbaportal/automation/projects
 /dbaportal/automation/git
 /dbaportal/backups
+/dbaportal/exports/install-reports
 /dbaportal/exports/patch-reports
 ```
 
@@ -173,6 +174,25 @@ Open:
 
 ```text
 http://<vm-ip>:3000
+```
+
+Install report exports are served by a small read-only static service:
+
+```bash
+sudo systemctl status dba-report-static
+sudo journalctl -u dba-report-static -f
+```
+
+Report URLs use:
+
+```text
+http://<vm-host>:8080/install-reports/<report>.html
+```
+
+To deploy or refresh the static report service from the repository:
+
+```bash
+bash scripts/deploy-report-static.sh rori_learning@dba-control-01
 ```
 
 ---
