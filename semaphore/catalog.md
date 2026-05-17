@@ -102,7 +102,7 @@ Common survey variables:
 | --- | --- | --- | --- | --- |
 | `CONFIG` | String | Yes | `configs/gcp-single-gi-lab.json` | Relative path inside install framework repo. `installer.patch_manifest` points to a manifest that defines base ZIPs, ASMLIB RPMs, OPatch/RU/OJVM ZIPs, and patch directories. Config still controls ASM disk sources (`uuid`/`DM_UUID`, `id_serial`/`ID_SERIAL`, `id_wwn`/`ID_WWN`, or `path`). |
 | `ASM_STORAGE_MODE` | Enum | Phase-specific | `raw` | `raw,asmlibv3,afd`; shown only on storage-aware install templates and workflow runners. Use `raw` for GCP/by-id VM disks, `asmlibv3` for Oracle ASMLIB v3 labels, or `afd` for ASM Filter Driver labels. |
-| `DATAGUARD_MODE` | Enum | Yes | empty | `manual,broker`; portal-selected mode passed as `--dataguard-mode`, never read from JSON. |
+| `DATAGUARD_MODE` / `MODE` | Enum | Phase-specific | empty | `manual,broker`; shown only on Data Guard-aware runners. `13 Configure Data Guard` uses `MODE`; workflow/advanced runners pass `DATAGUARD_MODE` when selected. |
 | `DRY_RUN` | Enum | Execute steps only | `true` | `true,false`; keep true until reviewed |
 | `FROM_PHASE` | String | No | empty | Optional start phase for Full/Resume workflow |
 | `TO_PHASE` | String | No | empty | Optional stop phase for Full/Resume workflow |
@@ -119,7 +119,7 @@ Recommended first runs:
 Use `99 Advanced Phase` only for manual actions not exposed as a dedicated template, including legacy compatibility `prepare-storage` and aggregate `apply-patch`. Prefer `06 Prepare Storage Rules` for the selected storage mode; keep the same `ASM_STORAGE_MODE` for `03`, `06`, `07`, `08`, `11`, `16`, and `17`. Non-storage templates do not prompt for this value and do not override the config.
 Use `07 Install Grid` and `09 Install DB Software` knowing their install-home step reruns by default: unconfigured homes are cleaned, base homes are unzipped again, and OPatch is refreshed before RU apply.
 
-`13 Configure Data Guard` runs `configure-dataguard` and requires `MODE=manual` or `MODE=broker`. Other install templates use `DATAGUARD_MODE` for the same runtime selection. The Data Guard method is selected in the portal and is not read from JSON.
+`13 Configure Data Guard` runs `configure-dataguard` and requires `MODE=manual` or `MODE=broker`. Non-Data Guard phase templates do not prompt for Data Guard mode. `16 Full Workflow`, `17 Resume Workflow`, and `99 Advanced Phase` expose `DATAGUARD_MODE` only because they may execute `configure-dataguard` depending on the selected action/range. The Data Guard method is selected at runtime and is not read from JSON.
 
 Use `16 Full Workflow` for the consolidated install plus replication run. Keep
 `DRY_RUN=true` for review; for real execution add the required guardrails in

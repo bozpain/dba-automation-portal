@@ -692,14 +692,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
-            },
-            {
               "name": "EXTRA_ARGS",
               "title": "Extra CLI args",
               "type": "string",
@@ -720,14 +712,6 @@
               "type": "string",
               "required": true,
               "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
             },
             {
               "name": "EXTRA_ARGS",
@@ -752,14 +736,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
-            },
-            {
               "name": "EXTRA_ARGS",
               "title": "Extra CLI args",
               "type": "string",
@@ -780,14 +756,6 @@
               "type": "string",
               "required": true,
               "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
             },
             {
               "name": "ASM_STORAGE_MODE",
@@ -828,14 +796,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
-            },
-            {
               "name": "DRY_RUN",
               "title": "Dry run",
               "type": "enum",
@@ -866,14 +826,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
-            },
-            {
               "name": "DRY_RUN",
               "title": "Dry run",
               "type": "enum",
@@ -902,14 +854,6 @@
               "type": "string",
               "required": true,
               "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
             },
             {
               "name": "ASM_STORAGE_MODE",
@@ -950,14 +894,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
-            },
-            {
               "name": "ASM_STORAGE_MODE",
               "title": "ASM storage mode",
               "type": "enum",
@@ -994,14 +930,6 @@
               "type": "string",
               "required": true,
               "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
             },
             {
               "name": "ASM_STORAGE_MODE",
@@ -1042,14 +970,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
-            },
-            {
               "name": "DRY_RUN",
               "title": "Dry run",
               "type": "enum",
@@ -1080,14 +1000,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
-            },
-            {
               "name": "DRY_RUN",
               "title": "Dry run",
               "type": "enum",
@@ -1116,14 +1028,6 @@
               "type": "string",
               "required": true,
               "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
             },
             {
               "name": "ASM_STORAGE_MODE",
@@ -1162,14 +1066,6 @@
               "type": "string",
               "required": true,
               "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
             },
             {
               "name": "DRY_RUN",
@@ -1240,14 +1136,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
-            },
-            {
               "name": "DRY_RUN",
               "title": "Dry run",
               "type": "enum",
@@ -1276,14 +1164,6 @@
               "type": "string",
               "required": true,
               "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "DATAGUARD_MODE",
-              "title": "Data Guard mode",
-              "type": "enum",
-              "required": true,
-              "values": "manual,broker",
-              "default": ""
             }
           ]
         },
@@ -1418,7 +1298,7 @@
               "name": "DATAGUARD_MODE",
               "title": "Data Guard mode",
               "type": "enum",
-              "required": true,
+              "required": false,
               "values": "manual,broker",
               "default": ""
             },
