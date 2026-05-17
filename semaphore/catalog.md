@@ -72,7 +72,7 @@ Common patch run variables for templates `04`, `05`, `06`, `07`, and `99`:
 
 ## Project: Oracle / Install
 
-Untuk fresh build: OS preparation, Grid/ASM, DB software, manifest-driven patch during install, auto ASM storage, create database, lalu optional Active Data Guard/Broker.
+Untuk fresh build: OS preparation, Grid/ASM, DB software, manifest-driven patch during install, operator-selected ASM storage, create database, lalu optional Active Data Guard/Broker.
 
 ```text
 00 Health Check
@@ -101,6 +101,7 @@ Common survey variables:
 | Name | Type | Required | Default | Notes |
 | --- | --- | --- | --- | --- |
 | `CONFIG` | String | Yes | `configs/gcp-single-gi-lab.json` | Relative path inside install framework repo. `installer.patch_manifest` points to a manifest that defines base ZIPs, ASMLIB RPMs, OPatch/RU/OJVM ZIPs, and patch directories. Config still controls ASM disk sources (`uuid`/`DM_UUID`, `id_serial`/`ID_SERIAL`, `id_wwn`/`ID_WWN`, or `path`). |
+| `ASM_STORAGE_MODE` | Enum | Yes | `raw` | `raw,asmlibv3,afd`; passed to `--asm-storage-mode`. Use `raw` for GCP/by-id VM disks, `asmlibv3` for Oracle ASMLIB v3 labels, or `afd` for ASM Filter Driver labels. |
 | `DRY_RUN` | Enum | Execute steps only | `true` | `true,false`; keep true until reviewed |
 | `FROM_PHASE` | String | No | empty | Optional start phase for Full/Resume workflow |
 | `TO_PHASE` | String | No | empty | Optional stop phase for Full/Resume workflow |
@@ -114,7 +115,7 @@ Recommended first runs:
 03 Precheck  (DRY_RUN=true)
 ```
 
-Use `99 Advanced Phase` only for manual actions not exposed as a dedicated template, including legacy compatibility `prepare-storage` and aggregate `apply-patch`. Prefer `06 Prepare Storage Rules` for the current multipath/non-multipath storage flow.
+Use `99 Advanced Phase` only for manual actions not exposed as a dedicated template, including legacy compatibility `prepare-storage` and aggregate `apply-patch`. Prefer `06 Prepare Storage Rules` for the selected storage mode; keep the same `ASM_STORAGE_MODE` for `06`, `07`, `08`, `16`, and `17`.
 Use `07 Install Grid` and `09 Install DB Software` knowing their install-home step reruns by default: unconfigured homes are cleaned, base homes are unzipped again, and OPatch is refreshed before RU apply.
 
 `13 Configure Data Guard` supports `MODE=config`, `MODE=active-dataguard`, or `MODE=broker`. `MODE=config` follows `dataguard.configuration_method` from the selected JSON config.
