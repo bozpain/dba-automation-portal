@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-TARGET="${1:-rori_learning@dba-control-01}"
+TARGET="${1:-rori_learning@34.170.193.77}"
 PORT="${DBA_REPORT_STATIC_PORT:-8080}"
 PORTAL_ROOT="${DBA_PORTAL_ROOT:-/dbaportal}"
+REPORT_HOST="${DBA_CONTROL_HOST:-localhost}"
 SERVICE_NAME="dba-report-static.service"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -17,7 +18,7 @@ fi
 
 echo "Deploying ${SERVICE_NAME} to ${TARGET}"
 echo "Reports root: ${PORTAL_ROOT}/exports"
-echo "Report URL base: http://dba-control-01:${PORT}/install-reports"
+echo "Report URL base: http://${REPORT_HOST}:${PORT}/install-reports"
 
 ssh "${TARGET}" "sudo install -d -o semaphore -g semaphore -m 0755 '${PORTAL_ROOT}/exports' '${PORTAL_ROOT}/exports/install-reports'"
 ssh "${TARGET}" "cat > /tmp/${SERVICE_NAME}" < "${SERVICE_FILE}"

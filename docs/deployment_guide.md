@@ -186,7 +186,7 @@ sudo journalctl -u dba-report-static -f
 Report URLs use:
 
 ```text
-http://<vm-host>:8080/install-reports/<report>.html
+http://localhost:8080/install-reports/<report>.html
 ```
 
 To deploy or refresh the static report service from the repository:

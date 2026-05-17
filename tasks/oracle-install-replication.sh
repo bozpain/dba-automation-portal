@@ -8,7 +8,7 @@ parse_survey_args "$@"
 PROJECT_ROOT="${ORACLE_INSTALL_REPLICATION_ROOT:-/dbaportal/automation/projects/oracle-install-replication-framework}"
 PYTHON_BIN="${PYTHON_BIN:-python3.12}"
 export ORACLE_AUTO_REPORT_PUBLISH_PATH="${ORACLE_AUTO_REPORT_PUBLISH_PATH:-${DBA_PORTAL_ROOT:-/dbaportal}/exports/install-reports}"
-export ORACLE_AUTO_REPORT_URL_BASE="${ORACLE_AUTO_REPORT_URL_BASE:-http://${DBA_CONTROL_HOST:-dba-control-01}:8080/install-reports}"
+export ORACLE_AUTO_REPORT_URL_BASE="${ORACLE_AUTO_REPORT_URL_BASE:-http://${DBA_CONTROL_HOST:-localhost}:8080/install-reports}"
 
 ACTION="$(get_arg ACTION validate-config)"
 CONFIG="$(get_arg CONFIG configs/gcp-single-gi-lab.json)"
