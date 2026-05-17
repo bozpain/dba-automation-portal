@@ -14,7 +14,7 @@ DRY_RUN="$(get_arg DRY_RUN false)"
 FROM_PHASE="$(get_arg FROM_PHASE "")"
 TO_PHASE="$(get_arg TO_PHASE "")"
 EXTRA_ARGS="$(get_arg EXTRA_ARGS "")"
-ASM_STORAGE_MODE="$(get_arg ASM_STORAGE_MODE raw)"
+ASM_STORAGE_MODE="$(get_arg ASM_STORAGE_MODE "")"
 
 require_project_root "${PROJECT_ROOT}" "main.py"
 safe_rel_path "${CONFIG}" "CONFIG"
@@ -28,19 +28,23 @@ case "${ACTION}" in
     ;;
 esac
 
-case "${ASM_STORAGE_MODE}" in
-  raw|asmlibv3|afd)
-    ;;
-  *)
-    echo "ERROR: unsupported ASM_STORAGE_MODE: ${ASM_STORAGE_MODE}" >&2
-    exit 1
-    ;;
-esac
+if [[ -n "${ASM_STORAGE_MODE}" ]]; then
+  case "${ASM_STORAGE_MODE}" in
+    raw|asmlibv3|afd)
+      ;;
+    *)
+      echo "ERROR: unsupported ASM_STORAGE_MODE: ${ASM_STORAGE_MODE}" >&2
+      exit 1
+      ;;
+  esac
+fi
 
 cd "${PROJECT_ROOT}"
 
 cmd=("${PYTHON_BIN}" "main.py" "${ACTION}" "--config" "${CONFIG}")
-cmd+=("--asm-storage-mode" "${ASM_STORAGE_MODE}")
+if [[ -n "${ASM_STORAGE_MODE}" ]]; then
+  cmd+=("--asm-storage-mode" "${ASM_STORAGE_MODE}")
+fi
 
 case "${ACTION}" in
   full|resume|prepare-storage-rules|prepare-storage|configure-asm-storage)

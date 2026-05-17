@@ -692,14 +692,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "ASM_STORAGE_MODE",
-              "title": "ASM storage mode",
-              "type": "enum",
-              "required": true,
-              "values": "raw,asmlibv3,afd",
-              "default": "raw"
-            },
-            {
               "name": "EXTRA_ARGS",
               "title": "Extra CLI args",
               "type": "string",
@@ -722,14 +714,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "ASM_STORAGE_MODE",
-              "title": "ASM storage mode",
-              "type": "enum",
-              "required": true,
-              "values": "raw,asmlibv3,afd",
-              "default": "raw"
-            },
-            {
               "name": "EXTRA_ARGS",
               "title": "Extra CLI args",
               "type": "string",
@@ -750,14 +734,6 @@
               "type": "string",
               "required": true,
               "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "ASM_STORAGE_MODE",
-              "title": "ASM storage mode",
-              "type": "enum",
-              "required": true,
-              "values": "raw,asmlibv3,afd",
-              "default": "raw"
             },
             {
               "name": "EXTRA_ARGS",
@@ -820,14 +796,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "ASM_STORAGE_MODE",
-              "title": "ASM storage mode",
-              "type": "enum",
-              "required": true,
-              "values": "raw,asmlibv3,afd",
-              "default": "raw"
-            },
-            {
               "name": "DRY_RUN",
               "title": "Dry run",
               "type": "enum",
@@ -856,14 +824,6 @@
               "type": "string",
               "required": true,
               "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "ASM_STORAGE_MODE",
-              "title": "ASM storage mode",
-              "type": "enum",
-              "required": true,
-              "values": "raw,asmlibv3,afd",
-              "default": "raw"
             },
             {
               "name": "DRY_RUN",
@@ -1010,14 +970,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "ASM_STORAGE_MODE",
-              "title": "ASM storage mode",
-              "type": "enum",
-              "required": true,
-              "values": "raw,asmlibv3,afd",
-              "default": "raw"
-            },
-            {
               "name": "DRY_RUN",
               "title": "Dry run",
               "type": "enum",
@@ -1046,14 +998,6 @@
               "type": "string",
               "required": true,
               "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "ASM_STORAGE_MODE",
-              "title": "ASM storage mode",
-              "type": "enum",
-              "required": true,
-              "values": "raw,asmlibv3,afd",
-              "default": "raw"
             },
             {
               "name": "DRY_RUN",
@@ -1124,14 +1068,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "ASM_STORAGE_MODE",
-              "title": "ASM storage mode",
-              "type": "enum",
-              "required": true,
-              "values": "raw,asmlibv3,afd",
-              "default": "raw"
-            },
-            {
               "name": "DRY_RUN",
               "title": "Dry run",
               "type": "enum",
@@ -1160,14 +1096,6 @@
               "type": "string",
               "required": true,
               "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "ASM_STORAGE_MODE",
-              "title": "ASM storage mode",
-              "type": "enum",
-              "required": true,
-              "values": "raw,asmlibv3,afd",
-              "default": "raw"
             },
             {
               "name": "MODE",
@@ -1208,14 +1136,6 @@
               "default": "configs/gcp-single-gi-lab.json"
             },
             {
-              "name": "ASM_STORAGE_MODE",
-              "title": "ASM storage mode",
-              "type": "enum",
-              "required": true,
-              "values": "raw,asmlibv3,afd",
-              "default": "raw"
-            },
-            {
               "name": "DRY_RUN",
               "title": "Dry run",
               "type": "enum",
@@ -1244,14 +1164,6 @@
               "type": "string",
               "required": true,
               "default": "configs/gcp-single-gi-lab.json"
-            },
-            {
-              "name": "ASM_STORAGE_MODE",
-              "title": "ASM storage mode",
-              "type": "enum",
-              "required": true,
-              "values": "raw,asmlibv3,afd",
-              "default": "raw"
             }
           ]
         },
