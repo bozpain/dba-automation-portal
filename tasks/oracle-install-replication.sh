@@ -15,18 +15,30 @@ FROM_PHASE="$(get_arg FROM_PHASE "")"
 TO_PHASE="$(get_arg TO_PHASE "")"
 EXTRA_ARGS="$(get_arg EXTRA_ARGS "")"
 ASM_STORAGE_MODE="$(get_arg ASM_STORAGE_MODE "")"
+DATAGUARD_MODE="$(get_arg DATAGUARD_MODE "")"
 
 require_project_root "${PROJECT_ROOT}" "main.py"
 safe_rel_path "${CONFIG}" "CONFIG"
 
 case "${ACTION}" in
-  validate-config|doctor|inventory|precheck|full|resume|prepare-os|verify-installer|prepare-storage-rules|prepare-storage|install-grid|configure-asm-storage|install-db-software|update-opatch|analyze-patch|apply-grid-patch|apply-db-patch|apply-ojvm-patch|datapatch|patch-inventory|apply-patch|create-database|setup-active-dataguard|setup-dataguard-broker|validate-deployment|generate-plan|generate-report|switchover|failover|collect-diagnostics|cleanup-lab|rollback-framework)
+  validate-config|doctor|inventory|precheck|full|resume|prepare-os|verify-installer|prepare-storage-rules|prepare-storage|install-grid|configure-asm-storage|install-db-software|update-opatch|analyze-patch|apply-grid-patch|apply-db-patch|apply-ojvm-patch|datapatch|patch-inventory|apply-patch|create-database|configure-dataguard|validate-deployment|generate-plan|generate-report|switchover|failover|collect-diagnostics|cleanup-lab|rollback-framework)
     ;;
   *)
     echo "ERROR: unsupported ACTION for oracle-install-replication: ${ACTION}" >&2
     exit 1
     ;;
 esac
+
+if [[ -n "${DATAGUARD_MODE}" ]]; then
+  case "${DATAGUARD_MODE}" in
+    manual|broker)
+      ;;
+    *)
+      echo "ERROR: unsupported DATAGUARD_MODE: ${DATAGUARD_MODE}" >&2
+      exit 1
+      ;;
+  esac
+fi
 
 if [[ -n "${ASM_STORAGE_MODE}" ]]; then
   case "${ASM_STORAGE_MODE}" in
@@ -44,6 +56,10 @@ cd "${PROJECT_ROOT}"
 cmd=("${PYTHON_BIN}" "main.py" "${ACTION}" "--config" "${CONFIG}")
 if [[ -n "${ASM_STORAGE_MODE}" ]]; then
   cmd+=("--asm-storage-mode" "${ASM_STORAGE_MODE}")
+fi
+
+if [[ -n "${DATAGUARD_MODE}" ]]; then
+  cmd+=("--dataguard-mode" "${DATAGUARD_MODE}")
 fi
 
 case "${ACTION}" in
